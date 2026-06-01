@@ -1,1012 +1,354 @@
 <!DOCTYPE html>
-<html lang="uz" data-theme="dark">
+<html lang="uz">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Jony.dev</title>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;700&family=DM+Serif+Display:ital@0;1&family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<title>Tarmoq Xavfsizligi Testi</title>
 <style>
-:root{
-  --g:#00e87a;--g2:#00b85e;--gd:rgba(0,232,122,0.12);
-  --bg:#080c0a;--bg2:#0e130f;--bg3:#131a14;
-  --card:#111811;--card2:#172018;--border:#1f2b20;--border2:#263428;
-  --txt:#e8f0e9;--txt2:#8a9e8b;--txt3:#4a5e4b;
-  --red:#ff4560;--r:12px;--r2:8px;
-}
-[data-theme="light"]{
-  --bg:#f4f7f4;--bg2:#edf2ed;--bg3:#e6ece6;
-  --card:#ffffff;--card2:#f0f5f0;--border:#d4e0d4;--border2:#c4d4c4;
-  --txt:#1a2e1b;--txt2:#4a6e4b;--txt3:#8aaa8b;
-}
-*{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--txt);font-family:'Outfit',sans-serif;min-height:100vh;overflow-x:hidden;transition:background .4s,color .4s}
-::selection{background:var(--g);color:#000}
-::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--bg2)}::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
-body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.5}
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0f2f5; min-height: 100vh; padding: 20px; }
+  .container { max-width: 800px; margin: 0 auto; }
+  h1 { text-align: center; color: #1a1a2e; font-size: 26px; margin-bottom: 8px; }
+  .subtitle { text-align: center; color: #666; margin-bottom: 20px; font-size: 14px; }
 
-/* PUBLIC */
-#pub-screen{min-height:100vh;display:flex;flex-direction:column;position:relative;overflow:hidden}
-.pub-bg{position:absolute;inset:0;overflow:hidden;pointer-events:none}
-.pub-bg-c{position:absolute;border-radius:50%;filter:blur(80px);opacity:.12}
-.pub-bg-c:nth-child(1){width:600px;height:600px;background:var(--g);top:-200px;right:-100px}
-.pub-bg-c:nth-child(2){width:400px;height:400px;background:#0040ff;bottom:-100px;left:-100px}
-.pub-grid{position:absolute;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:48px 48px;opacity:.35;mask-image:radial-gradient(ellipse 80% 70% at 50% 50%,black,transparent)}
-.pub-nav{display:flex;align-items:center;justify-content:space-between;padding:22px 40px;position:relative;z-index:10;border-bottom:1px solid var(--border)}
-.pub-logo{font-family:'DM Serif Display',serif;font-size:22px;color:var(--g)}
-.pub-nav-right{display:flex;align-items:center;gap:10px}
-.pub-theme-btn,.pub-login-btn{padding:8px 16px;border-radius:6px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;cursor:pointer;transition:all .2s;border:1px solid var(--border);background:transparent;color:var(--txt2)}
-.pub-login-btn{border-color:var(--g);color:var(--g)}
-.pub-login-btn:hover{background:var(--g);color:#000}
-.pub-theme-btn:hover{border-color:var(--border2)}
-.pub-hero{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:60px 20px;position:relative;z-index:2}
-.pub-tag{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:4px;color:var(--g);text-transform:uppercase;opacity:0;animation:au .6s ease .1s forwards;margin-bottom:24px;display:flex;align-items:center;gap:8px}
-.pub-tag::before,.pub-tag::after{content:'';width:30px;height:1px;background:var(--g)}
-.pub-hero h1{font-family:'DM Serif Display',serif;font-size:clamp(56px,10vw,110px);line-height:.95;opacity:0;animation:au .8s ease .3s forwards;margin-bottom:20px;letter-spacing:-2px}
-.pub-hero h1 em{font-style:italic;color:var(--g)}
-.pub-hero>p{font-size:16px;color:var(--txt2);opacity:0;animation:au .8s ease .5s forwards;max-width:480px;line-height:1.7;margin-bottom:48px}
-.pub-tabs{display:flex;gap:8px;opacity:0;animation:au .8s ease .7s forwards;flex-wrap:wrap;justify-content:center}
-.pub-tab-btn{padding:10px 22px;border-radius:8px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;cursor:pointer;transition:all .25s;border:1px solid var(--border);background:var(--card);color:var(--txt2)}
-.pub-tab-btn:hover,.pub-tab-btn.active{border-color:var(--g);color:var(--g);background:var(--gd)}
-.pub-content{position:relative;z-index:2;padding:0 40px 60px;max-width:1100px;margin:0 auto;width:100%}
-.pub-panel{display:none}.pub-panel.active{display:block;animation:fadeIn .3s ease}
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px; }
+  .stat { background: white; border-radius: 12px; padding: 14px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+  .stat-n { font-size: 26px; font-weight: 700; }
+  .stat-l { font-size: 12px; color: #888; margin-top: 2px; }
+  .green { color: #22c55e; }
+  .red { color: #ef4444; }
+  .blue { color: #3b82f6; }
 
-/* LOGIN */
-#login-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:8000;align-items:center;justify-content:center;backdrop-filter:blur(6px)}
-#login-modal.open{display:flex;animation:fadeIn .2s ease}
-.login-box{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:44px 40px;width:100%;max-width:380px;animation:slideUp .3s ease;position:relative}
-.login-close{position:absolute;top:16px;right:16px;background:transparent;border:none;color:var(--txt3);font-size:20px;cursor:pointer}
-.login-close:hover{color:var(--red)}
-.login-box h2{font-family:'DM Serif Display',serif;font-size:26px;margin-bottom:4px}
-.login-sub{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--txt3);margin-bottom:28px;letter-spacing:1px}
-.inp-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--txt3);text-transform:uppercase;display:block;margin-bottom:7px}
-.inp-field-wrap{position:relative;margin-bottom:14px}
-.inp-field{width:100%;background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:12px 40px 12px 14px;color:var(--txt);font-family:'JetBrains Mono',monospace;font-size:13px;outline:none;transition:border-color .2s;letter-spacing:1px}
-.inp-field:focus{border-color:var(--g)}
-.eye-btn{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:16px;color:var(--txt3)}
-.eye-btn:hover{color:var(--g)}
-.login-btn-main{width:100%;padding:13px;background:var(--g);border:none;border-radius:8px;color:#000;font-family:'Outfit',sans-serif;font-weight:700;font-size:14px;cursor:pointer;margin-top:8px;transition:opacity .2s,transform .1s}
-.login-btn-main:hover{opacity:.88}.login-btn-main:active{transform:scale(.98)}
-.err-msg{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--red);margin-top:10px;text-align:center;display:none}
+  .progress-wrap { background: white; border-radius: 12px; padding: 14px 18px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+  .progress-top { display: flex; justify-content: space-between; font-size: 13px; color: #555; margin-bottom: 8px; }
+  .progress-bar { background: #e5e7eb; border-radius: 8px; height: 10px; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, #3b82f6, #6366f1); border-radius: 8px; transition: width 0.4s ease; }
 
-/* ADMIN */
-#admin-shell{display:none;min-height:100vh;animation:fadeIn .4s ease}
-.topbar{display:flex;align-items:center;padding:0 32px;height:58px;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(8,12,10,0.92);backdrop-filter:blur(16px);z-index:500;gap:16px}
-[data-theme="light"] .topbar{background:rgba(244,247,244,0.94)}
-.t-logo{font-family:'DM Serif Display',serif;font-size:20px;color:var(--g);white-space:nowrap;margin-right:8px}
-.t-tabs{display:flex;gap:2px;flex:1;overflow-x:auto}
-.t-tab{padding:6px 14px;border-radius:6px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--txt3);cursor:pointer;transition:all .2s;border:none;background:transparent;white-space:nowrap}
-.t-tab:hover{color:var(--txt);background:var(--card)}.t-tab.active{color:var(--g);background:var(--gd)}
-.t-right{display:flex;align-items:center;gap:8px;margin-left:auto;flex-shrink:0}
-.t-online{display:flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--g);letter-spacing:1px}
-.t-dot{width:6px;height:6px;background:var(--g);border-radius:50%;animation:pulse 1.8s ease infinite}
-.t-btn{padding:6px 14px;border-radius:6px;font-family:'JetBrains Mono',monospace;font-size:10px;cursor:pointer;transition:all .2s;border:1px solid var(--border);background:transparent;color:var(--txt3);letter-spacing:1px}
-.t-btn:hover{border-color:var(--border2);color:var(--txt)}
-.logout-t{border-color:transparent}.logout-t:hover{border-color:var(--red);color:var(--red)}
-.tab-panel{display:none}.tab-panel.active{display:block;animation:fadeIn .3s ease}
-.admin-main{max-width:1000px;margin:0 auto;padding:36px 28px 80px}
+  .topics { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+  .topic-btn { padding: 7px 14px; border: 2px solid #e5e7eb; border-radius: 20px; cursor: pointer; font-size: 13px; background: white; color: #555; transition: all 0.2s; font-weight: 500; }
+  .topic-btn:hover { border-color: #3b82f6; color: #3b82f6; }
+  .topic-btn.active { background: #3b82f6; border-color: #3b82f6; color: white; }
 
-/* COMMON */
-.sec-title{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:3px;color:var(--txt3);text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:12px}
-.sec-title::after{content:'';flex:1;height:1px;background:var(--border)}
-.card-box{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:24px;margin-bottom:24px}
-.clock-bar{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:16px 22px;display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px}
-.cl-time{font-family:'JetBrains Mono',monospace;font-size:30px;font-weight:700;color:var(--g);letter-spacing:3px}
-.cl-date{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--txt3);text-align:right;margin-bottom:4px;letter-spacing:1px}
-.cl-greet{font-size:13px;color:var(--txt2);font-weight:600;text-align:right}
+  .card { background: white; border-radius: 16px; padding: 28px; box-shadow: 0 4px 16px rgba(0,0,0,0.1); }
+  .q-num { font-size: 13px; color: #888; margin-bottom: 10px; font-weight: 500; }
+  .q-text { font-size: 17px; font-weight: 600; color: #1a1a2e; margin-bottom: 22px; line-height: 1.5; }
+  .options { display: flex; flex-direction: column; gap: 10px; }
+  .opt { padding: 13px 18px; border: 2px solid #e5e7eb; border-radius: 10px; cursor: pointer; font-size: 15px; background: white; text-align: left; transition: all 0.2s; color: #333; line-height: 1.4; }
+  .opt:hover:not(:disabled) { border-color: #3b82f6; background: #eff6ff; color: #1d4ed8; }
+  .opt.correct { background: #dcfce7; border-color: #22c55e; color: #15803d; font-weight: 600; }
+  .opt.wrong { background: #fee2e2; border-color: #ef4444; color: #dc2626; }
+  .opt:disabled { cursor: default; }
 
-/* PROFILE */
-.profile-hero{display:flex;align-items:flex-end;gap:28px;margin-bottom:36px;flex-wrap:wrap}
-.avatar-wrap{position:relative;flex-shrink:0}
-.avatar-circle{width:100px;height:100px;border-radius:50%;background:linear-gradient(135deg,var(--g),#0066ff);display:flex;align-items:center;justify-content:center;font-size:40px;border:2px solid var(--border);overflow:hidden}
-.avatar-circle img{width:100%;height:100%;object-fit:cover;display:none}
-.avatar-circle img.show{display:block}
-.avatar-change{position:absolute;bottom:2px;right:2px;width:26px;height:26px;background:var(--g);border:none;border-radius:50%;cursor:pointer;font-size:12px;display:flex;align-items:center;justify-content:center}
-.avatar-change:hover{transform:scale(1.1)}
-.profile-meta h2{font-family:'DM Serif Display',serif;font-size:32px;line-height:1;margin-bottom:6px}
-.profile-meta h2 span{color:var(--g)}
-.profile-nik,.profile-loc{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--txt3);letter-spacing:1px;margin-bottom:3px}
-.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
-.pf-inp{width:100%;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);padding:10px 14px;color:var(--txt);font-family:'JetBrains Mono',monospace;font-size:12px;outline:none;transition:border-color .2s}
-.pf-inp:focus{border-color:var(--g)}
-.save-btn{padding:10px 24px;background:var(--g);border:none;border-radius:var(--r2);color:#000;font-family:'Outfit',sans-serif;font-weight:700;font-size:13px;cursor:pointer;transition:opacity .2s}
-.save-btn:hover{opacity:.85}
-.saved-badge{display:none;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--g);margin-left:12px}
+  .feedback { margin-top: 16px; padding: 12px 16px; border-radius: 10px; font-size: 15px; font-weight: 500; display: none; }
+  .feedback.show { display: block; }
+  .feedback.ok { background: #dcfce7; color: #15803d; border-left: 4px solid #22c55e; }
+  .feedback.no { background: #fee2e2; color: #dc2626; border-left: 4px solid #ef4444; }
 
-/* PUB PROFILE */
-.pub-profile-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:28px;margin-bottom:24px;display:flex;gap:24px;align-items:center;flex-wrap:wrap}
-.pub-av{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--g),#0066ff);display:flex;align-items:center;justify-content:center;font-size:32px;flex-shrink:0;overflow:hidden;border:2px solid var(--border)}
-.pub-av img{width:100%;height:100%;object-fit:cover;display:none}
-.pub-av img.show{display:block}
-.pub-profile-info h2{font-family:'DM Serif Display',serif;font-size:26px;margin-bottom:4px}
-.pub-profile-info h2 span{color:var(--g)}
-.pub-nik{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--txt3);letter-spacing:2px;margin-bottom:4px}
-.pub-bio-txt{font-size:14px;color:var(--txt2);line-height:1.7;margin-top:8px}
+  .next-btn { margin-top: 18px; padding: 12px 28px; background: #3b82f6; color: white; border: none; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; display: none; transition: background 0.2s; }
+  .next-btn:hover { background: #2563eb; }
 
-/* STATS */
-.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:28px}
-.stat-c{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:18px;transition:border-color .2s,transform .2s}
-.stat-c:hover{border-color:var(--g);transform:translateY(-2px)}
-.stat-n{font-family:'DM Serif Display',serif;font-size:34px;color:var(--g);line-height:1;margin-bottom:4px}
-.stat-l{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--txt3);letter-spacing:1.5px;text-transform:uppercase}
+  .done { text-align: center; padding: 20px; }
+  .done-pct { font-size: 60px; font-weight: 800; margin: 10px 0; }
+  .done-info { font-size: 16px; color: #666; margin-bottom: 20px; }
+  .done-badge { display: inline-block; padding: 8px 22px; border-radius: 24px; font-size: 16px; font-weight: 700; margin-bottom: 16px; }
+  .badge-a { background: #dcfce7; color: #15803d; }
+  .badge-b { background: #dbeafe; color: #1d4ed8; }
+  .badge-c { background: #fef9c3; color: #a16207; }
+  .badge-d { background: #fee2e2; color: #dc2626; }
+  .retry-btn { padding: 12px 28px; background: #6366f1; color: white; border: none; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; margin: 6px; }
+  .retry-btn:hover { background: #4f46e5; }
 
-/* SKILLS + PROJECTS */
-.skills-flex{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:28px}
-.sk-tag{padding:7px 14px;border:1px solid var(--border);border-radius:100px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--txt3);transition:all .2s;cursor:default}
-.sk-tag:hover{border-color:var(--g);color:var(--g);background:var(--gd)}
-.proj-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-bottom:28px}
-.proj-c{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:20px;transition:all .2s;cursor:pointer}
-.proj-c:hover{border-color:var(--g);transform:translateY(-3px)}
-.proj-ic{font-size:24px;margin-bottom:10px}
-.proj-c h4{font-size:14px;font-weight:700;margin-bottom:5px}
-.proj-c p{font-size:11px;color:var(--txt3);font-family:'JetBrains Mono',monospace;line-height:1.6}
-.proj-tag{margin-top:12px;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--g)}
-
-/* LIBRARY */
-.upload-zone{border:2px dashed var(--border);border-radius:var(--r);padding:32px 20px;text-align:center;cursor:pointer;transition:all .25s;margin-bottom:24px;position:relative;background:var(--bg2)}
-.upload-zone:hover,.upload-zone.drag-over{border-color:var(--g);background:var(--gd)}
-.upload-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
-.lib-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px}
-.lib-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:20px;cursor:pointer;transition:all .2s;position:relative}
-.lib-card:hover{border-color:var(--g);transform:translateY(-2px)}
-.lc-icon{font-size:36px;margin-bottom:12px}
-.lc-title{font-size:13px;font-weight:700;margin-bottom:6px;line-height:1.3;word-break:break-word}
-.lc-size{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--txt3)}
-.lc-tag{margin-top:10px;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--g)}
-.card-del{position:absolute;top:10px;right:10px;background:transparent;border:none;cursor:pointer;color:var(--txt3);font-size:15px;transition:color .2s;display:none}
-.lib-card:hover .card-del{display:block}
-.card-del:hover{color:var(--red)}
-.empty-msg{text-align:center;padding:48px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--txt3);line-height:2}
-
-/* PDF */
-#pdf-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:9000;flex-direction:column}
-#pdf-modal.open{display:flex}
-.pdf-header{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;background:var(--card);border-bottom:1px solid var(--border)}
-.pdf-title-bar{font-size:14px;font-weight:700}
-.pdf-close-btn{background:var(--red);border:none;color:#fff;width:30px;height:30px;border-radius:6px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center}
-.pdf-frame{flex:1;width:100%;border:none;background:#222}
-
-/* GALLERY */
-.gal-cats{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
-.cat-btn{padding:7px 16px;border:1px solid var(--border);border-radius:100px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--txt3);cursor:pointer;transition:all .2s;background:transparent}
-.cat-btn:hover,.cat-btn.active{border-color:var(--g);color:var(--g);background:var(--gd)}
-.gal-upload-row{display:flex;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap}
-.gal-upload-btn{padding:9px 20px;background:var(--g);border:none;border-radius:var(--r2);color:#000;font-family:'Outfit',sans-serif;font-weight:700;font-size:12px;cursor:pointer;transition:opacity .2s;position:relative;overflow:hidden}
-.gal-upload-btn:hover{opacity:.85}
-.gal-upload-btn input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
-.gal-cat-sel{padding:9px 14px;background:var(--card);border:1px solid var(--border);border-radius:var(--r2);color:var(--txt);font-family:'JetBrains Mono',monospace;font-size:11px;outline:none}
-.gal-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
-.gal-item{border-radius:var(--r);overflow:hidden;cursor:pointer;position:relative;border:1px solid var(--border);transition:all .2s;background:var(--card)}
-.gal-item:hover{border-color:var(--g);transform:scale(1.02)}
-.gal-item:hover .gal-ov{opacity:1}
-.gal-thumb{width:100%;aspect-ratio:1;display:flex;align-items:center;justify-content:center;background:var(--bg3)}
-.gal-thumb img{width:100%;height:100%;object-fit:cover}
-.gal-desc-txt{padding:10px 12px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--txt3);line-height:1.5;border-top:1px solid var(--border)}
-.gal-ov{position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .2s;font-size:11px;color:#fff;font-family:'JetBrains Mono',monospace;letter-spacing:1px}
-.gal-del-btn{position:absolute;top:8px;right:8px;background:var(--red);border:none;color:#fff;width:26px;height:26px;border-radius:6px;cursor:pointer;font-size:13px;display:none;align-items:center;justify-content:center}
-.gal-item:hover .gal-del-btn{display:flex}
-#img-lb{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:9001;align-items:center;justify-content:center;padding:20px}
-#img-lb.open{display:flex;animation:fadeIn .2s ease}
-.img-lb-inner{max-width:90vw;max-height:90vh;position:relative}
-.img-lb-img{max-width:100%;max-height:80vh;border-radius:10px;display:block}
-.img-lb-desc{font-family:'JetBrains Mono',monospace;font-size:12px;color:#aaa;margin-top:10px;text-align:center}
-.img-lb-close{position:absolute;top:-14px;right:-14px;width:30px;height:30px;background:var(--red);border:none;border-radius:50%;color:#fff;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center}
-
-/* MUSIC */
-.music-wrap{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:28px;margin-bottom:20px}
-.now-row{display:flex;align-items:center;gap:18px;padding:18px;background:var(--bg2);border-radius:var(--r);border:1px solid var(--border);margin-bottom:16px}
-.disc{width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#1a2a1a,#2a3a2a);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;animation:discSpin 5s linear infinite;animation-play-state:paused;border:2px solid var(--border);position:relative}
-.disc::after{content:'';position:absolute;width:14px;height:14px;border-radius:50%;background:var(--bg2);border:2px solid var(--border)}
-.disc.on{animation-play-state:running}
-.now-info{flex:1;min-width:0}
-.now-t{font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:3px}
-.now-a{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--txt3)}
-.ctrl-row{display:flex;align-items:center;gap:8px}
-.cb{width:34px;height:34px;border:1px solid var(--border);border-radius:50%;background:transparent;cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;transition:all .2s;color:var(--txt)}
-.cb:hover{border-color:var(--g);color:var(--g)}
-.cb.main{width:44px;height:44px;background:var(--g);border-color:var(--g);color:#000;font-size:16px}
-.cb.main:hover{opacity:.85}
-.prog-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
-.pt{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--txt3);width:34px}
-.pbar{flex:1;height:3px;background:var(--border);border-radius:3px;cursor:pointer}
-.pfill{height:100%;background:var(--g);border-radius:3px;width:0%;transition:width .4s linear}
-.vol-row{display:flex;align-items:center;gap:8px;margin-bottom:18px}
-.vol-sl{flex:1;max-width:130px;-webkit-appearance:none;height:3px;border-radius:3px;background:var(--border);outline:none;cursor:pointer}
-.vol-sl::-webkit-slider-thumb{-webkit-appearance:none;width:12px;height:12px;border-radius:50%;background:var(--g);cursor:pointer}
-.eq-row{display:flex;align-items:flex-end;gap:3px;height:18px;margin-left:auto}
-.eb{width:3px;background:var(--g);border-radius:2px;animation:eqA .7s ease-in-out infinite alternate}
-.eb:nth-child(2){animation-delay:.12s}.eb:nth-child(3){animation-delay:.25s}.eb:nth-child(4){animation-delay:.06s}
-.eb.off{animation-play-state:paused;height:3px!important}
-.pl-items{display:flex;flex-direction:column;gap:6px;max-height:300px;overflow-y:auto;padding-right:4px}
-.pl-items::-webkit-scrollbar{width:3px}
-.pl-items::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
-.pi{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:8px;cursor:pointer;border:1px solid transparent;transition:all .18s}
-.pi:hover{background:var(--card2);border-color:var(--border)}.pi.active{border-color:var(--g);background:var(--gd)}
-.pi-n{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--txt3);width:20px;text-align:center}
-.pi.active .pi-n{color:var(--g)}
-.pi-thumb{width:34px;height:34px;border-radius:6px;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:15px}
-.pi-info{flex:1;min-width:0}
-.pi-name{font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.pi.active .pi-name{color:var(--g)}
-.pi-sz{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--txt3)}
-.pi-del{background:none;border:none;cursor:pointer;color:var(--txt3);font-size:13px;display:none;transition:color .2s}
-.pi:hover .pi-del{display:block}.pi-del:hover{color:var(--red)}
-
-/* CHAT */
-.chat-wrap{display:flex;flex-direction:column;height:calc(100vh - 200px);min-height:400px;background:var(--card);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
-.chat-header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
-.ch-dot{width:8px;height:8px;background:var(--g);border-radius:50%;animation:pulse 1.8s ease infinite}
-.chat-header h3{font-size:14px;font-weight:700}
-.ch-sub{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--txt3);margin-left:auto}
-.chat-msgs{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:12px}
-.chat-msgs::-webkit-scrollbar{width:3px}
-.chat-msgs::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
-.chat-msg{display:flex;gap:10px;align-items:flex-start;animation:fadeUp .3s ease}
-.chat-msg.own{flex-direction:row-reverse}
-.cm-av{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--g),#0066ff);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
-.cm-av.owner{background:linear-gradient(135deg,var(--g),#00b85e)}
-.cm-name{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--txt3);margin-bottom:4px;letter-spacing:1px}
-.chat-msg.own .cm-name{text-align:right}
-.cm-txt{background:var(--card2);border:1px solid var(--border);border-radius:10px;border-top-left-radius:2px;padding:10px 14px;font-size:13px;line-height:1.6;max-width:340px;word-break:break-word}
-.chat-msg.own .cm-txt{background:var(--gd);border-color:var(--g);border-top-left-radius:10px;border-top-right-radius:2px}
-.cm-time{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--txt3);margin-top:4px}
-.chat-msg.own .cm-time{text-align:right}
-.chat-input-row{padding:14px 16px;border-top:1px solid var(--border);display:flex;gap:10px;align-items:center}
-.name-inp{width:110px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);padding:10px 12px;color:var(--txt);font-family:'JetBrains Mono',monospace;font-size:12px;outline:none;transition:border-color .2s;flex-shrink:0}
-.name-inp:focus{border-color:var(--g)}
-.msg-inp{flex:1;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);padding:10px 14px;color:var(--txt);font-family:'Outfit',sans-serif;font-size:13px;outline:none;transition:border-color .2s;resize:none;height:42px}
-.msg-inp:focus{border-color:var(--g)}
-.send-btn{padding:10px 18px;background:var(--g);border:none;border-radius:var(--r2);color:#000;font-family:'Outfit',sans-serif;font-weight:700;font-size:13px;cursor:pointer;flex-shrink:0}
-.send-btn:hover{opacity:.85}
-
-/* TOAST */
-.toast{position:fixed;bottom:24px;right:24px;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--txt);z-index:99999;animation:slideUp .3s ease}
-.toast.ok{border-color:var(--g);color:var(--g)}.toast.err{border-color:var(--red);color:var(--red)}
-
-/* KEYFRAMES */
-@keyframes au{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
-@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-@keyframes slideUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.3;transform:scale(.7)}}
-@keyframes discSpin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
-@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-7px)}40%{transform:translateX(7px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
-@keyframes eqA{from{height:3px}to{height:16px}}
-.shake{animation:shake .4s ease!important}
-@media(max-width:640px){
-  .pub-nav,.pub-content{padding-left:16px;padding-right:16px}
-  .topbar{padding:0 14px}.t-tabs{display:none}
-  .admin-main{padding:20px 14px 60px}
-  .field-row{grid-template-columns:1fr}
-  .now-row{flex-wrap:wrap}
-}
+  @media (max-width: 500px) {
+    .stats { grid-template-columns: repeat(2, 1fr); }
+    .stat-n { font-size: 20px; }
+    .q-text { font-size: 15px; }
+    .opt { font-size: 14px; }
+  }
 </style>
 </head>
 <body>
+<div class="container">
+  <h1>🔐 Tarmoq Xavfsizligi Testi</h1>
+  <p class="subtitle">Mavzuni tanlang va boshlang — savollar har safar aralashadi</p>
 
-<!-- PUBLIC -->
-<div id="pub-screen">
-  <div class="pub-bg"><div class="pub-bg-c"></div><div class="pub-bg-c"></div><div class="pub-grid"></div></div>
-  <nav class="pub-nav">
-    <div class="pub-logo">Jony.dev</div>
-    <div class="pub-nav-right">
-      <button class="pub-theme-btn" id="pub-theme-btn" onclick="toggleTheme()">🌙</button>
-      <button class="pub-login-btn" onclick="openLogin()">Admin kirish →</button>
-    </div>
-  </nav>
-  <div class="pub-hero">
-    <div class="pub-tag">// shaxsiy portfolio</div>
-    <h1>Jony<br><em>Developer</em></h1>
-    <p id="pub-bio-hero">Toshkentdan yosh dasturchi.</p>
-    <div class="pub-tabs">
-      <button class="pub-tab-btn active" onclick="pubTab('home',this)">🏠 Asosiy</button>
-      <button class="pub-tab-btn" onclick="pubTab('library',this)">📚 Kutubxona</button>
-      <button class="pub-tab-btn" onclick="pubTab('gallery',this)">📸 Galereya</button>
-      <button class="pub-tab-btn" onclick="pubTab('music',this)">🎵 Musiqa</button>
-      <button class="pub-tab-btn" onclick="pubTab('chat',this)">💬 Muhokama</button>
-    </div>
+  <div class="stats">
+    <div class="stat"><div class="stat-n blue" id="sTotal">0</div><div class="stat-l">Jami savol</div></div>
+    <div class="stat"><div class="stat-n green" id="sCorrect">0</div><div class="stat-l">To'g'ri</div></div>
+    <div class="stat"><div class="stat-n red" id="sWrong">0</div><div class="stat-l">Noto'g'ri</div></div>
+    <div class="stat"><div class="stat-n" id="sPct" style="color:#6366f1">—</div><div class="stat-l">Natija</div></div>
   </div>
-  <div class="pub-content">
-    <div id="pub-home" class="pub-panel active">
-      <div class="pub-profile-card">
-        <div class="pub-av" id="pub-av"><span id="pub-av-em">👨‍💻</span><img id="pub-av-img" src="" alt=""></div>
-        <div class="pub-profile-info">
-          <h2><span id="pub-name">Jony</span></h2>
-          <div class="pub-nik" id="pub-nik">@jony_dev · Toshkent, UZ</div>
-          <div class="pub-bio-txt" id="pub-bio">Toshkentdan yosh dasturchi.</div>
-        </div>
-      </div>
-      <div class="stats-row">
-        <div class="stat-c"><div class="stat-n">12</div><div class="stat-l">Loyihalar</div></div>
-        <div class="stat-c"><div class="stat-n">3</div><div class="stat-l">Tajriba (yil)</div></div>
-      </div>
-      <div class="sec-title">Ko'nikmalar</div>
-      <div class="skills-flex">
-        <div class="sk-tag">HTML5</div><div class="sk-tag">CSS3</div><div class="sk-tag">JavaScript</div>
-        <div class="sk-tag">React</div><div class="sk-tag">Node.js</div><div class="sk-tag">Git</div>
-        <div class="sk-tag">UI Design</div><div class="sk-tag">Problem Solving</div>
-      </div>
-      <div class="sec-title">Loyihalar</div>
-      <div class="proj-grid">
-        <div class="proj-c"><div class="proj-ic">🔥</div><h4>Shaxsiy Sayt</h4><p>Siz ko'rib turgan sayt.</p><div class="proj-tag">→ HTML · CSS · JS</div></div>
-        <div class="proj-c"><div class="proj-ic">📱</div><h4>Todo App</h4><p>Vazifalarni boshqarish ilovasi.</p><div class="proj-tag">→ JS · LocalStorage</div></div>
-        <div class="proj-c"><div class="proj-ic">🎮</div><h4>Mini O'yin</h4><p>Canvas API bilan o'yin.</p><div class="proj-tag">→ Canvas · JS</div></div>
-      </div>
+
+  <div class="progress-wrap">
+    <div class="progress-top">
+      <span id="progText">Mavzu tanlanmagan</span>
+      <span id="progPct">0%</span>
     </div>
-    <div id="pub-library" class="pub-panel">
-      <div class="sec-title">Kutubxona</div>
-      <div id="pub-lib-grid" class="lib-grid"></div>
-      <div id="pub-lib-empty" class="empty-msg" style="display:none">📚 Hali kitob qo'yilmagan</div>
-    </div>
-    <div id="pub-gallery" class="pub-panel">
-      <div class="gal-cats" id="pub-gal-cats">
-        <button class="cat-btn active" onclick="pubGalFilter('all',this)">Hammasi</button>
-        <button class="cat-btn" onclick="pubGalFilter('mashinalar',this)">🚗 Mashinalar</button>
-        <button class="cat-btn" onclick="pubGalFilter('futbol',this)">⚽ Futbol</button>
-        <button class="cat-btn" onclick="pubGalFilter('tabiat',this)">🌿 Tabiat</button>
-        <button class="cat-btn" onclick="pubGalFilter('hayvonlar',this)">🐾 Hayvonlar</button>
-      </div>
-      <div id="pub-gal-grid" class="gal-grid"></div>
-      <div id="pub-gal-empty" class="empty-msg" style="display:none">📸 Bu kategoriyada rasm yo'q</div>
-    </div>
-    <div id="pub-music" class="pub-panel">
-      <div class="music-wrap">
-        <div class="now-row">
-          <div class="disc" id="pub-disc">🎵</div>
-          <div class="now-info"><div class="now-t" id="pub-now-t">Qo'shiq tanlanmagan</div><div class="now-a" id="pub-now-a">— Yuklanmoqda...</div></div>
-          <div class="ctrl-row">
-            <button class="cb" onclick="prevT()">⏮</button>
-            <button class="cb main" id="pub-play-btn" onclick="togglePlay()">▶</button>
-            <button class="cb" onclick="nextT()">⏭</button>
-          </div>
-        </div>
-        <div class="prog-row">
-          <span class="pt" id="pub-cur">0:00</span>
-          <div class="pbar" onclick="seekAudio(event)"><div class="pfill" id="pub-fill"></div></div>
-          <span class="pt" id="pub-tot" style="text-align:right">0:00</span>
-        </div>
-        <div class="vol-row">
-          <span style="font-size:14px;color:var(--txt3)">🔈</span>
-          <input type="range" class="vol-sl" min="0" max="1" step="0.01" value="0.8" oninput="setVol(this.value)">
-          <div class="eq-row"><div class="eb off"></div><div class="eb off"></div><div class="eb off"></div><div class="eb off"></div></div>
-        </div>
-        <div class="sec-title">Playlist</div>
-        <div id="pub-pl-list" class="pl-items"></div>
-        <div id="pub-pl-empty" class="empty-msg">🎵 Hali musiqa yo'q</div>
-      </div>
-    </div>
-    <div id="pub-chat" class="pub-panel">
-      <div class="chat-wrap">
-        <div class="chat-header"><div class="ch-dot"></div><h3>Muhokama</h3><span class="ch-sub" id="chat-cnt-pub">0 xabar</span></div>
-        <div class="chat-msgs" id="pub-chat-msgs"></div>
-        <div class="chat-input-row">
-          <input class="name-inp" id="pub-chat-name" placeholder="Ismingiz" maxlength="20">
-          <textarea class="msg-inp" id="pub-chat-msg" placeholder="Xabar yozing..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChat('pub')}" maxlength="300"></textarea>
-          <button class="send-btn" onclick="sendChat('pub')">→</button>
-        </div>
-      </div>
+    <div class="progress-bar"><div class="progress-fill" id="progFill" style="width:0%"></div></div>
+  </div>
+
+  <div class="topics" id="topicBtns"></div>
+
+  <div id="qArea">
+    <div class="card" style="text-align:center; padding: 40px; color: #888;">
+      <div style="font-size: 48px; margin-bottom: 12px;">👆</div>
+      <div style="font-size: 16px;">Yuqoridagi mavzulardan birini tanlang</div>
     </div>
   </div>
 </div>
-
-<!-- LOGIN -->
-<div id="login-modal">
-  <div class="login-box">
-    <button class="login-close" onclick="closeLogin()">✕</button>
-    <h2>Admin kirish</h2>
-    <div class="login-sub">// faqat admin kirishi mumkin</div>
-    <label class="inp-label">Maxfiy parol</label>
-    <div class="inp-field-wrap">
-      <input class="inp-field" type="password" id="pwd-inp" placeholder="parolni kiriting" onkeydown="if(event.key==='Enter')doLogin()">
-      <button class="eye-btn" id="eye-btn" onclick="toggleEye()" type="button">👁</button>
-    </div>
-    <button class="login-btn-main" onclick="doLogin()">Kirish</button>
-    <div class="err-msg" id="err-msg">❌ Parol noto'g'ri!</div>
-  </div>
-</div>
-
-<!-- ADMIN -->
-<div id="admin-shell">
-  <div class="topbar">
-    <div class="t-logo">Jony.dev</div>
-    <div class="t-tabs">
-      <button class="t-tab active" onclick="adminTab('dashboard',this)">📊 Dashboard</button>
-      <button class="t-tab" onclick="adminTab('profile',this)">👤 Profil</button>
-      <button class="t-tab" onclick="adminTab('library',this)">📚 Kutubxona</button>
-      <button class="t-tab" onclick="adminTab('gallery',this)">📸 Galereya</button>
-      <button class="t-tab" onclick="adminTab('music',this)">🎵 Musiqa</button>
-      <button class="t-tab" onclick="adminTab('chat',this)">💬 Chat</button>
-    </div>
-    <div class="t-right">
-      <div class="t-online"><div class="t-dot"></div>ONLINE</div>
-      <button class="t-btn" id="adm-theme-btn" onclick="toggleTheme()">🌙</button>
-      <button class="t-btn logout-t" onclick="doLogout()">Chiqish</button>
-    </div>
-  </div>
-
-  <div class="tab-panel active" id="panel-dashboard">
-    <div class="admin-main">
-      <div class="clock-bar">
-        <div class="cl-time" id="cl-time">00:00:00</div>
-        <div><div class="cl-date" id="cl-date">—</div><div class="cl-greet" id="cl-greet">—</div></div>
-      </div>
-      <div class="sec-title">Statistika</div>
-      <div class="stats-row">
-        <div class="stat-c"><div class="stat-n" id="st-lib">0</div><div class="stat-l">Kitoblar</div></div>
-        <div class="stat-c"><div class="stat-n" id="st-gal">0</div><div class="stat-l">Rasmlar</div></div>
-        <div class="stat-c"><div class="stat-n" id="st-mus">0</div><div class="stat-l">Qo'shiqlar</div></div>
-        <div class="stat-c"><div class="stat-n" id="st-chat">0</div><div class="stat-l">Xabarlar</div></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="tab-panel" id="panel-profile">
-    <div class="admin-main">
-      <div class="profile-hero">
-        <div class="avatar-wrap">
-          <div class="avatar-circle" id="adm-av"><span id="adm-av-em">👨‍💻</span><img id="adm-av-img" src="" alt=""></div>
-          <button class="avatar-change" onclick="document.getElementById('av-file').click()">📷</button>
-          <input type="file" id="av-file" accept="image/*" style="display:none" onchange="changeAvatar(this)">
-        </div>
-        <div class="profile-meta">
-          <h2>Jony <span>Admin</span></h2>
-          <div class="profile-nik" id="adm-nik-disp">@jony_dev</div>
-          <div class="profile-loc" id="adm-loc-disp">📍 Toshkent, UZ</div>
-        </div>
-      </div>
-      <div class="card-box">
-        <h3 style="font-size:14px;font-weight:700;margin-bottom:18px">Profil ma'lumotlari</h3>
-        <div class="field-row">
-          <div><label class="inp-label">Ism</label><input class="pf-inp" id="pf-name" placeholder="Ismingiz" value="Jony"></div>
-          <div><label class="inp-label">Nickname</label><input class="pf-inp" id="pf-nik" placeholder="@nickname" value="@jony_dev"></div>
-        </div>
-        <div class="field-row">
-          <div><label class="inp-label">Kasb</label><input class="pf-inp" id="pf-role" placeholder="Developer..." value="Full-Stack Developer"></div>
-          <div><label class="inp-label">Shahar</label><input class="pf-inp" id="pf-city" placeholder="Shahar" value="Toshkent, UZ"></div>
-        </div>
-        <div style="margin-bottom:12px"><label class="inp-label">Bio</label><textarea class="pf-inp" id="pf-bio" rows="3" style="resize:vertical">Toshkentdan yosh dasturchi.</textarea></div>
-        <button class="save-btn" onclick="saveProfile()">Saqlash</button>
-        <span class="saved-badge" id="saved-badge">✓ Saqlandi!</span>
-      </div>
-    </div>
-  </div>
-
-  <div class="tab-panel" id="panel-library">
-    <div class="admin-main">
-      <div class="sec-title">Kutubxona</div>
-      <div class="upload-zone">
-        <input type="file" id="lib-file-inp" accept=".pdf,application/pdf" multiple onchange="handleLibFiles(this.files)">
-        <div style="font-size:36px;margin-bottom:10px">📚</div>
-        <div style="font-size:14px;font-weight:700;margin-bottom:4px">PDF fayllarni yuklang</div>
-        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--txt3)">Bosing yoki bu yerga tashlang</div>
-      </div>
-      <div id="adm-lib-empty" class="empty-msg">📚 Hali kitob yo'q</div>
-      <div id="adm-lib-grid" class="lib-grid"></div>
-    </div>
-  </div>
-
-  <div class="tab-panel" id="panel-gallery">
-    <div class="admin-main">
-      <div class="sec-title">Galereya</div>
-      <div class="gal-upload-row">
-        <div class="gal-upload-btn">📸 Rasm yuklash<input type="file" id="gal-file-inp" accept="image/*" multiple onchange="handleGalFiles(this.files)"></div>
-        <select class="gal-cat-sel" id="gal-cat-sel">
-          <option value="mashinalar">🚗 Mashinalar</option>
-          <option value="futbol">⚽ Futbol</option>
-          <option value="tabiat">🌿 Tabiat</option>
-          <option value="hayvonlar">🐾 Hayvonlar</option>
-        </select>
-      </div>
-      <div class="gal-cats" id="adm-gal-cats">
-        <button class="cat-btn active" onclick="admGalFilter('all',this)">Hammasi</button>
-        <button class="cat-btn" onclick="admGalFilter('mashinalar',this)">🚗 Mashinalar</button>
-        <button class="cat-btn" onclick="admGalFilter('futbol',this)">⚽ Futbol</button>
-        <button class="cat-btn" onclick="admGalFilter('tabiat',this)">🌿 Tabiat</button>
-        <button class="cat-btn" onclick="admGalFilter('hayvonlar',this)">🐾 Hayvonlar</button>
-      </div>
-      <div id="adm-gal-grid" class="gal-grid"></div>
-      <div id="adm-gal-empty" class="empty-msg">📸 Hali rasm yo'q</div>
-    </div>
-  </div>
-
-  <div class="tab-panel" id="panel-music">
-    <div class="admin-main">
-      <div class="sec-title">Musiqa</div>
-      <div class="music-wrap">
-        <div class="upload-zone" style="margin-bottom:20px">
-          <input type="file" id="mus-file-inp" accept="audio/*" multiple onchange="handleMusFiles(this.files)">
-          <div style="font-size:32px;margin-bottom:8px">🎵</div>
-          <div style="font-size:14px;font-weight:700;margin-bottom:4px">MP3 yuklash</div>
-          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--txt3)">Bosing yoki tashlang · MP3 / WAV / OGG</div>
-        </div>
-        <div class="now-row">
-          <div class="disc" id="adm-disc">🎵</div>
-          <div class="now-info"><div class="now-t" id="adm-now-t">Qo'shiq tanlanmagan</div><div class="now-a" id="adm-now-a">— MP3 yuklang</div></div>
-          <div class="ctrl-row">
-            <button class="cb" onclick="prevT()">⏮</button>
-            <button class="cb main" id="adm-play-btn" onclick="togglePlay()">▶</button>
-            <button class="cb" onclick="nextT()">⏭</button>
-          </div>
-        </div>
-        <div class="prog-row">
-          <span class="pt" id="adm-cur">0:00</span>
-          <div class="pbar" onclick="seekAudio(event)"><div class="pfill" id="adm-fill"></div></div>
-          <span class="pt" id="adm-tot" style="text-align:right">0:00</span>
-        </div>
-        <div class="vol-row">
-          <span style="font-size:14px;color:var(--txt3)">🔈</span>
-          <input type="range" class="vol-sl" id="adm-vol" min="0" max="1" step="0.01" value="0.8" oninput="setVol(this.value)">
-          <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--txt3)" id="adm-vol-pct">80%</span>
-          <div class="eq-row"><div class="eb off"></div><div class="eb off"></div><div class="eb off"></div><div class="eb off"></div></div>
-          <button class="cb" style="width:28px;height:28px;font-size:11px;border-radius:6px;margin-left:6px" onclick="clearAllMusic()">🗑</button>
-        </div>
-        <div class="sec-title">Playlist</div>
-        <div id="adm-pl-list" class="pl-items"></div>
-        <div id="adm-pl-empty" class="empty-msg">🎵 Hali musiqa yo'q</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="tab-panel" id="panel-chat">
-    <div class="admin-main">
-      <div class="chat-wrap">
-        <div class="chat-header"><div class="ch-dot"></div><h3>Muhokama (Admin)</h3><span class="ch-sub" id="chat-cnt-adm">0 xabar</span></div>
-        <div class="chat-msgs" id="adm-chat-msgs"></div>
-        <div class="chat-input-row">
-          <input class="name-inp" value="Jony (Admin)" readonly style="color:var(--g);border-color:var(--g)">
-          <textarea class="msg-inp" id="adm-chat-msg" placeholder="Javob yozing..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChat('adm')}" maxlength="300"></textarea>
-          <button class="send-btn" onclick="sendChat('adm')">→</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div id="pdf-modal">
-  <div class="pdf-header"><div class="pdf-title-bar" id="pdf-title">Kitob</div><button class="pdf-close-btn" onclick="closePdf()">✕</button></div>
-  <iframe class="pdf-frame" id="pdf-frame" src=""></iframe>
-</div>
-
-<div id="img-lb" onclick="closeImgLb()">
-  <div class="img-lb-inner" onclick="event.stopPropagation()">
-    <div id="img-lb-content"></div>
-    <button class="img-lb-close" onclick="closeImgLb()">✕</button>
-  </div>
-</div>
-
-<audio id="aud" preload="metadata"></audio>
 
 <script>
-/* ══════════════════════════════════════
-   SUPABASE
-══════════════════════════════════════ */
-const SURL='https://behbwooiwayrlhfexzuo.supabase.co';
-const SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJlaGJ3b29pd2F5cmxoZmV4enVvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc3NDQyNzIsImV4cCI6MjA5MzMyMDI3Mn0.xjWWJuddCTv21M_prLmWtThDK_VVSpRXPklvdX8PCM8';
-const sb=supabase.createClient(SURL,SKEY);
+const ALL = [
+  {t:"1-mavzu",full:"Asosiy tushunchalar",qs:[
+    {q:"Tarmoq xavfsizligining asosiy vazifasi qaysi javobda to'g'ri ko'rsatilgan?",o:["Tarmoq va ma'lumotlarni himoyalash","Faqat kompyuterni tezlashtirish","Faqat printerlarni ulash","Faqat dastur yozish"],a:0},
+    {q:"CIA triadasidagi 'C' harfi nimani anglatadi?",o:["Control","Confidentiality","Connection","Configuration"],a:1},
+    {q:"Ma'lumotning ruxsatsiz o'zgarmasligi qaysi tamoyilga tegishli?",o:["Yaxlitlik","Mavjudlik","Marshrutlash","Zaxiralash"],a:0},
+    {q:"Xizmatlarning foydalanuvchi uchun vaqtida mavjud bo'lishi qaysi tamoyil?",o:["Mavjudlik","Yaxlitlik","Maxfiylik","Maskalash"],a:0},
+    {q:"Tarmoq xavfsizligi kiberxavfsizlikning qanday qismi hisoblanadi?",o:["Keraksiz qismi","Asosiy amaliy tarkibiy qismi","Faqat nazariy qismi","Faqat fizik qismi"],a:1},
+    {q:"Eng kam imtiyoz tamoyili nimani talab qiladi?",o:["Har kimga administrator huquqi berishni","Faqat zarur huquqlarni berishni","Parolsiz ishlashni","Tizimni o'chirishni"],a:1},
+    {q:"Ko'p qatlamli himoya yondashuvi nimani anglatadi?",o:["Bitta himoya vositasiga tayanishni","Bir nechta mustaqil himoya qatlamlarini qo'llashni","Faqat parol ishlatishni","Faqat Wi-Fi himoyasini"],a:1},
+    {q:"Quyidagilardan qaysi biri tarmoq xavfsizligi obyekti emas?",o:["Marshrutizator","Kommutator","Simsiz kirish nuqtasi","Qog'oz daftar"],a:3},
+    {q:"Tarmoq xavfsizligi qachon yakunlanadi?",o:["Bir marta firewall o'rnatilganda","Antivirus o'chirib qo'yilganda","Hech qachon, u uzluksiz jarayon","Faqat audit kuni"],a:2},
+    {q:"Foydalanuvchini ishonchli aniqlash qaysi tushuncha bilan bog'liq?",o:["Autentiklik","Kompressiya","Arxivlash","Marshrutlash"],a:0},
+    {q:"Axborot xavfsizligi qamrovi tarmoq xavfsizligiga nisbatan qanday?",o:["Torroq","Aynan bir xil","Kengroq","Faqat fizik"],a:2},
+    {q:"Javobgarlikni ta'minlash uchun odatda nima yuritiladi?",o:["Log va audit izlari","Faqat rangli printer","Faqat modem","Faqat USB"],a:0},
+    {q:"Qaysi holat tarmoq xavfsizligi madaniyatiga kiradi?",o:["Parolni ulashish","Noma'lum havolani bosish","Kuchli parol va 2FA ishlatish","Hisobni umumiy qilish"],a:2},
+    {q:"Tarmoq xavfsizligining tashkiliy chorasi qaysi?",o:["Xavfsizlik siyosatini joriy etish","Switch portini tozalash","Kabel uzunligini o'lchash","Monitor almashtirish"],a:0},
+    {q:"Kiberxavfsizlik tushunchasi qaysi sohani qamrab oladi?",o:["Faqat lokal tarmoqni","Raqamli muhitdagi barcha aktivlarni","Faqat server xonasini","Faqat antivirusni"],a:1}
+  ]},
+  {t:"2-mavzu",full:"Zamonaviy tahdidlar",qs:[
+    {q:"Passiv hujumning asosiy belgisi nima?",o:["Trafikni yashirin kuzatish","Serverni formatlash","Switchni almashtirish","Kabelni kesish"],a:0},
+    {q:"DDoS hujumidan asosiy maqsad nima?",o:["Xizmatni to'xtatish yoki sekinlashtirish","Parolni kuchaytirish","Faylni zaxiralash","Trafikni shifrlash"],a:0},
+    {q:"Foydalanuvchini aldash orqali ma'lumot olish usuli nima deyiladi?",o:["Ijtimoiy injiniring","Defragmentatsiya","Segmentatsiya","Virtualizatsiya"],a:0},
+    {q:"Tarmoq ichida bir hostdan boshqasiga yashirin harakatlanish bosqichi nima?",o:["Lateral harakat","Arxivlash","Defolt marshrut","Kompressiya"],a:0},
+    {q:"Nol-kun zaifligi nimani anglatadi?",o:["Hali yamalanmagan yangi zaiflikni","Eski printer nosozligini","Yangi kabel standartini","Server zaxirasini"],a:0},
+    {q:"Botnet odatda nimadan tashkil topadi?",o:["Boshqaruv ostidagi ko'plab zararlangan qurilmalardan","Faqat bitta routerdan","Faqat switchlardan","Faqat server xonasidan"],a:0},
+    {q:"Qaysi chora fishing xavfini kamaytiradi?",o:["Xodimlarni o'qitish va havolalarni tekshirish","Portlarni ko'paytirish","Qurilmani o'chirmaslik","Faqat USB ishlatish"],a:0},
+    {q:"Ransomware odatda nima qiladi?",o:["Fayllarni shifrlab, to'lov talab qiladi","Kompyuterni changdan tozalaydi","Routerga rang beradi","Ekranni kengaytiradi"],a:0},
+    {q:"Tarmoq segmentatsiyasi qanday foyda beradi?",o:["Hujum tarqalishini cheklaydi","Barcha parollarni o'chiradi","Internetni bekor qiladi","Faqat tezlikni kamaytiradi"],a:0},
+    {q:"Bruteforce hujumi nimaga qaratilgan bo'ladi?",o:["Parol yoki kalitni topishga","Monitor almashtirishga","Faylni chop etishga","Kabelni uzaytirishga"],a:0},
+    {q:"Tahdid real xavfga aylanishi uchun yana nima kerak?",o:["Zaiflik va hujumchi imkoniyati","Rangli monitor","Ko'proq printer","Qalin kabel"],a:0},
+    {q:"Quyidagilardan qaysi biri faol hujum?",o:["MITM (Man-in-the-Middle)","Trafik statistikasi ko'rish","Faqat log o'qish","Faqat monitoring"],a:0},
+    {q:"ARP spoofing qaysi qatlamdagi aldovga misol bo'la oladi?",o:["Mahalliy tarmoqdagi manzil bog'lashiga","Faqat optik tola uzilishiga","Faqat DNS zonaga","Faqat fayl tizimiga"],a:0},
+    {q:"Ta'minot zanjiri hujumi nimalarga qaratiladi?",o:["Uchinchi tomon dastur yoki xizmatlariga","Faqat lokal printerga","Faqat klaviaturaga","Faqat UPSga"],a:0},
+    {q:"Quyidagilardan qaysi biri zamonaviy tarmoq tahdidi hisoblanadi?",o:["Ransomware","Qog'oz printer qopqog'i","Klaviatura stendi","Monitor rangi"],a:0}
+  ]},
+  {t:"3-mavzu",full:"Xavfsizlik siyosati",qs:[
+    {q:"Xavfsizlik siyosati asosan nimani belgilaydi?",o:["Qoidalar, rollar va javobgarlikni","Faqat kompyuter narxini","Faqat dars jadvalini","Faqat IP manzilni"],a:0},
+    {q:"'Need-to-know' tamoyili nimani ko'zda tutadi?",o:["Har kim hamma ma'lumotni ko'rishini","Faqat zarur ma'lumotga kirishni","Faqat printer ishlatishni","Parolsiz kirishni"],a:1},
+    {q:"Vazifalarni ajratish tamoyili nimaga xizmat qiladi?",o:["Bir odamga barcha vakolatni berishga","Suiiste'mol va xatolar xavfini kamaytirishga","Internetni o'chirishga","Loglarni yo'qotishga"],a:1},
+    {q:"Eng kam imtiyoz tamoyili qaysi javobda to'g'ri?",o:["Maksimal huquq berish","Vaqtincha o'chirib qo'yish","Faqat zarur vakolat berish","Barcha parollarni umumiy qilish"],a:2},
+    {q:"Qaysi biri tashkiliy nazoratga misol bo'ladi?",o:["Foydalanish reglamenti","Firewallning MAC jadvali","Switch porti","Kabellar markasi"],a:0},
+    {q:"Qaysi biri texnik nazoratga misol bo'ladi?",o:["Firewall","Ma'ruza matni","Taqvim","Buyruq nusxasi"],a:0},
+    {q:"Riskga asoslangan boshqaruv nimani anglatadi?",o:["Hammani bir xil xavf deb olishni","Resurslarni ustuvor xavflarga yo'naltirishni","Faqat antivirus sotib olishni","Barcha portlarni yopmaslikni"],a:1},
+    {q:"RBAC nimani anglatadi?",o:["Role-Based Access Control","Random Backup Access Cable","Remote Binary Active Channel","Rapid Bridge Access Command"],a:0},
+    {q:"Siyosatga rioya etishni baholash vositasi qaysi?",o:["Ichki audit","Kamera pulti","Monitor tagligi","Sichqoncha"],a:0},
+    {q:"Siyosatni yangilash qachon kerak?",o:["Tahdidlar va jarayonlar o'zgarganda","Hech qachon","Faqat qish faslida","Faqat elektr uzilganda"],a:0},
+    {q:"Siyosat kim tomonidan tasdiqlanadi?",o:["Rahbariyat tomonidan","Faqat talaba tomonidan","Faqat provayder tomonidan","Faqat printer operatori"],a:0},
+    {q:"Quyidagilardan qaysi biri xavfsizlik tamoyili emas?",o:["Maxfiylik","Yaxlitlik","Mavjudlik","Tasodifiylik"],a:3},
+    {q:"Siyosat va protsedura o'rtasidagi farq qaysi javobda to'g'ri?",o:["Siyosat nima qilish, protsedura qanday qilishni belgilaydi","Ikkalasi bir xil","Protsedura muhimroq","Siyosat faqat texnik hujjat"],a:0},
+    {q:"Siyosatning formal hujjat bo'lib qolmasligi uchun nima zarur?",o:["Amaliy joriy etish va nazorat","Faqat muqova","Faqat rangli chop etish","Faqat logotip"],a:0},
+    {q:"Siyosatni amalda qo'llash uchun yana nima kerak?",o:["Yo'riqnoma va audit","Faqat banner","Faqat kabel","Faqat printer"],a:0}
+  ]},
+  {t:"4-mavzu",full:"Wi-Fi xavfsizligi",qs:[
+    {q:"Wi-Fi xavfsizligida korporativ muhit uchun afzal rejim qaysi?",o:["WPA2/WPA3-Enterprise","Ochiq tarmoq","WEP","Parolsiz hotspot"],a:0},
+    {q:"802.1X odatda nima bilan bog'liq?",o:["Markazlashgan autentifikatsiya","Monitor chastotasi","Printer drayveri","UPS quvvati"],a:0},
+    {q:"Rogue access point nima?",o:["Ruxsatsiz o'rnatilgan kirish nuqtasi","Rasmiy korporativ AP","Switch porti","Optik konnektor"],a:0},
+    {q:"Evil twin hujumining mohiyati nima?",o:["Soxta Wi-Fi yaratib foydalanuvchini aldash","Kabelni ikki marta ulash","Serverni sovutish","IP ni zaxiralash"],a:0},
+    {q:"Quyidagilardan qaysi biri eskirgan va zaif Wi-Fi himoyasi?",o:["WEP","WPA3","802.1X","RADIUS"],a:0},
+    {q:"WPS odatda nima sababdan xavfli?",o:["PIN asosidagi zaifliklar tufayli","Signalni kuchaytirgani uchun","Kabel talab qilgani uchun","Internetni tezlatgani uchun"],a:0},
+    {q:"Mehmon Wi-Fi uchun eng to'g'ri yondashuv qaysi?",o:["Alohida VLAN yoki segment","Asosiy serverlar bilan bir tarmoq","Domenga to'liq ulash","Admin huquqi berish"],a:0},
+    {q:"MAC filtering nega yetarli emas?",o:["MAC manzilni soxtalashtirish mumkinligi uchun","U radio signalni o'chiradi","U internetni uzadi","U faqat printerga ishlaydi"],a:0},
+    {q:"Wi-Fi kirish nuqtalarida nimani muntazam yangilash kerak?",o:["Firmware","Monitor oynasi","Stol qoplamasi","Kabel rangini"],a:0},
+    {q:"RADIUS serveri qaysi vazifada ishlatiladi?",o:["AAA xizmatlari uchun","Videokarta boshqaruvi uchun","DNS keshi uchun","UPS monitoringi uchun"],a:0},
+    {q:"WPA3 ning ustun jihati nima?",o:["Kuchliroq himoya va zamonaviy autentifikatsiya","WEP dan zaifroq","Faqat printerlar uchun","Faqat kabelda ishlaydi"],a:0},
+    {q:"Ochiq Wi-Fi tarmog'i qanday xavf tug'diradi?",o:["Trafikni tutib olish va soxta portal xavfi","Faqat elektr sarfi","Faqat monitor isishi","Hech qanday xavf yo'q"],a:0},
+    {q:"Signal qamrovini me'yorlash nimaga yordam beradi?",o:["Tashqaridan tinglash xavfini kamaytirishga","Printer tezligini oshirishga","Fayllarni o'chirishga","Portni ko'paytirishga"],a:0},
+    {q:"Kuchli Wi-Fi xavfsizligida qaysi omil muhim?",o:["Shifrlash va autentifikatsiya","Faqat signal balandligi","Faqat SSID nomi","Faqat MAC ro'yxati"],a:0},
+    {q:"Qo'shimcha himoya sifatida qaysi yondashuv to'g'ri?",o:["Noqonuniy APlarni aniqlash","Parolni hammaga berish","SSIDni yashirishning o'zi bilan cheklanish","WEP ga qaytish"],a:0}
+  ]},
+  {t:"5-mavzu",full:"OS xavfsizligi",qs:[
+    {q:"Windows domen muhitida markaziy katalog xizmati qaysi?",o:["Active Directory","Photoshop","Wireshark","LibreOffice"],a:0},
+    {q:"Windows Server da xavfsizlik parametrlarini markazlashgan boshqarish vositasi qaysi?",o:["Group Policy","Paint","Notepad","Taskbar"],a:0},
+    {q:"NTFS ruxsatlari nimani boshqaradi?",o:["Fayl va papkalarga kirish huquqlarini","Monitor yorqinligini","Switch portini","UPS kuchlanishini"],a:0},
+    {q:"Linux tizimida vaqtinchalik imtiyozli buyruq bajarish vositasi qaysi?",o:["sudo","ping","grep","pwd"],a:0},
+    {q:"SELinux ning vazifasi nima?",o:["Majburiy kirish nazoratini kuchaytirish","Printerni tezlashtirish","DNSni o'chirish","Kabelni himoyalash"],a:0},
+    {q:"SSH hardening uchun qaysi usul to'g'ri?",o:["Parol o'rniga kalit asosida kirish","Anonim root login","Portni hammaga ochish","Eski protokolni yoqish"],a:0},
+    {q:"Windows disk shifrlash vositasi qaysi?",o:["BitLocker","Telnet","FTP","DHCP"],a:0},
+    {q:"Linux da kirishni tekshirish modullari tizimi qaysi?",o:["PAM","RDP","SMB","NTP"],a:0},
+    {q:"Audit loglarning asosiy maqsadi nima?",o:["Hodisalarni kuzatish va tekshirish","Kompyuter rangini o'zgartirish","Port sonini ko'paytirish","Signal kuchini oshirish"],a:0},
+    {q:"Patch management nimani anglatadi?",o:["Yangilanishlarni rejalashtirib o'rnatishni","Kabelni yamashni","Parolni yozib qo'yishni","Printerga toner quyishni"],a:0},
+    {q:"Quyidagilardan qaysi biri Linux firewall vositalaridan biri?",o:["firewalld","Excel","WordPad","Scanner"],a:0},
+    {q:"Keraksiz xizmatlarni o'chirish nima beradi?",o:["Hujum yuzasini kamaytiradi","Fayl hajmini oshiradi","Parolni bekor qiladi","Loglarni o'chiradi"],a:0},
+    {q:"Administrator huquqlarini cheklash qaysi tamoyilga mos?",o:["Eng kam imtiyoz","Ochiq kirish","Anonim boshqaruv","Tasodifiylik"],a:0},
+    {q:"Microsoft Defender nimaga misol?",o:["Xavfsizlik himoya vositasi","Optik kabel turi","DNS yozuvi","VPN protokoli"],a:0},
+    {q:"Server xavfsizligi qachon ta'minlangan deb hisoblanadi?",o:["Doimiy monitoring va yangilanish bilan","Bir marta o'rnatilganda","Faqat elektr kelganda","Faqat tarmoq uzilganda"],a:0}
+  ]},
+  {t:"6-mavzu",full:"Standartlar",qs:[
+    {q:"ISMS uchun talablarni belgilovchi standart qaysi?",o:["ISO/IEC 27001","ISO/IEC 11801","RFC 1918","IEEE 802.3af"],a:0},
+    {q:"Tarmoq xavfsizligiga ixtisoslashgan standartlar oilasi qaysi?",o:["ISO/IEC 27033","MPEG","HTML5","USB 3.0"],a:0},
+    {q:"NIST CSF 2.0 ning yangi qo'shilgan asosiy funksiyasi qaysi?",o:["Govern","Compile","Install","Switch"],a:0},
+    {q:"GDPR asosan nimani himoyalashga qaratilgan?",o:["Shaxsga doir ma'lumotlarni","Faqat printer loglarini","Faqat kabel chizmalarini","Faqat server raklarini"],a:0},
+    {q:"Quyidagilardan qaysi biri NIST CSF funksiyasi emas?",o:["Respond","Recover","Govern","Decorate"],a:3},
+    {q:"NIST CSF funksiyalarining to'g'ri ketma-ketligi qaysi javobga yaqin?",o:["Govern-Identify-Protect-Detect-Respond-Recover","Recover-Install-Print-Delete","DNS-DHCP-FTP-POP3","RAM-ROM-CPU-GPU"],a:0},
+    {q:"O'z DSt atamasi nimani bildiradi?",o:["O'zbekiston davlat standarti","Ochiq dastur tarmog'i","Optik zanjir dasturi","Oddiy zaxira tizimi"],a:0},
+    {q:"ISO/IEC 27001 da risklarni boshqarish qanday rol o'ynaydi?",o:["Markaziy rol o'ynaydi","Umuman kerak emas","Faqat Wi-Fi uchun","Faqat printer uchun"],a:0},
+    {q:"GDPR qaysi hududda qabul qilingan reglament?",o:["Yevropa Ittifoqi","Faqat Osiyo","Faqat Afrika","Faqat Amerika"],a:0},
+    {q:"ISO/IEC 27033 oilasi tarmoq xavfsizligida nimaga yordam beradi?",o:["Loyihalash va joriy etishga","Faqat ofis mebellariga","Faqat printer sotib olishga","Faqat internet tarifiga"],a:0},
+    {q:"Standartlardan kompleks foydalanish nimani beradi?",o:["Boshqaruv va texnik yondashuvni uyg'unlashtiradi","Parollarni bekor qiladi","Tarmoqni keraksiz qiladi","Faqat qog'oz ishini oshiradi"],a:0},
+    {q:"NIST CSF 2.0 nimani taqdim etadi?",o:["Kiberxavfni boshqarish ramkasini","Yangi operatsion tizimni","Firewall qurilmasini","VPN apparatini"],a:0},
+    {q:"ISO/IEC 27033-5 qaysi mavzuga yaqin?",o:["VPN xavfsizligi","Printer drayveri","Monitor rang sozlamasi","Elektr uzatish"],a:0},
+    {q:"Quyidagilardan qaysi biri boshqaruv standartiga, qaysisi tarmoq ko'rsatmasiga mansub?",o:["27001 va 27033","FTP va SSH","DNS va DHCP","RAM va SSD"],a:0},
+    {q:"GDPR doirasida texnik va tashkiliy choralar deganda nima tushuniladi?",o:["Shifrlash, riskga mos himoya va xabardor qilish majburiyatlari","Faqat printer xaridi","Faqat kabel markasi","Faqat ofis mebeli"],a:0}
+  ]},
+  {t:"7-mavzu",full:"SIEM va monitoring",qs:[
+    {q:"SIEM qisqartmasi nimani anglatadi?",o:["Security Information and Event Management","System Internal Email Mechanism","Secure Internet Exchange Module","Simple Integrated Ethernet Monitor"],a:0},
+    {q:"SIEM ning asosiy vazifalaridan biri qaysi?",o:["Loglarni markazlashgan yig'ish","Monitorni ta'mirlash","Kabelni cho'zish","Printer rangini almashtirish"],a:0},
+    {q:"Korrelyatsiya nimani anglatadi?",o:["Turli loglarni bog'lab tahlil qilishni","Faqat nusxa ko'chirishni","Monitor ulashni","Disk formatlashni"],a:0},
+    {q:"Yolg'on ijobiy (false positive) nimani bildiradi?",o:["Xavf yo'q bo'lsa ham ogohlantirish chiqishini","Haqiqiy virusni","O'chgan serverni","Internet tezlashishini"],a:0},
+    {q:"MTTD nimani o'lchaydi?",o:["Tahdid aniqlanguncha o'tgan o'rtacha vaqtni","Monitor diagonali","Trafik uzunligi","Kabel qalinligini"],a:0},
+    {q:"MTTR nimani o'lchaydi?",o:["Tiklashgacha bo'lgan o'rtacha vaqtni","Printer tezligini","SSID uzunligini","IP versiyasini"],a:0},
+    {q:"SIEM ga qaysi manbalarni ulash foydali?",o:["Firewall, AD, VPN, IDS/IPS","Faqat klaviatura","Faqat printer","Faqat skaner"],a:0},
+    {q:"Use case nimani bildiradi?",o:["Aniqlash ssenariysi va qoida to'plamini","Kabel o'lchamini","Dars jadvalini","Ofis xaritasini"],a:0},
+    {q:"SIEM noto'g'ri sozlansa nima bo'lishi mumkin?",o:["Keraksiz ogohlantirishlar ko'payadi","Internet tezligi oshadi","Trafik yo'qoladi","Printer yangilanadi"],a:0},
+    {q:"Hodisani jilovlash bosqichi nimani ko'zda tutadi?",o:["Tahdid tarqalishini to'xtatishni","Kompyuterni sotishni","SSID ni o'zgartirmaslikni","Printerni o'chirishni"],a:0},
+    {q:"Qaysi rol SIEM dan ko'p foydalanadi?",o:["SOC yoki xavfsizlik analitigi","Faqat ofitsiant","Faqat haydovchi","Faqat dizayner"],a:0},
+    {q:"Vaqt bo'yicha uyg'unlashtirish nega muhim?",o:["Voqealar ketma-ketligini tiklash uchun","Monitor yorqinligini oshirish uchun","Fayl nomini chiroyli qilish uchun","Printer qog'ozini almashtirish uchun"],a:0},
+    {q:"SIEM ning afzalligi nimada?",o:["Ko'p manbali xavfsizlik ko'rinishini beradi","Faqat disk hajmini ko'rsatadi","Faqat bir logni saqlaydi","Faqat Wi-Fi parolini beradi"],a:0},
+    {q:"Monitoring nimaga xizmat qiladi?",o:["Xavfli alomatlarni erta aniqlashga","Faqat internetni tezlashtirishga","Faqat musiqani eshitishga","Faqat fayl saqlashga"],a:0},
+    {q:"Incident response ning dastlabki bosqichlaridan biri qaysi?",o:["Aniqlash va tahlil","Devorni bo'yash","Kabel kesish","Printer o'rnatish"],a:0}
+  ]},
+  {t:"10-mavzu",full:"SSL/TLS, IPsec, SSH",qs:[
+    {q:"Veb ulanishlarni himoyalashda keng qo'llanadigan zamonaviy protokol qaysi?",o:["TLS","Telnet","FTP","TFTP"],a:0},
+    {q:"SSL atamasi bugungi kunda ko'proq qanday ma'noda ishlatiladi?",o:["Tarixiy yoki umumiy atama sifatida","Faqat audio kodek sifatida","Printer rejimi sifatida","Disk formati sifatida"],a:0},
+    {q:"TLS da serverni tekshirish uchun nima ishlatiladi?",o:["Sertifikat","Monitor","USB","Patch cord"],a:0},
+    {q:"IPsec qaysi darajada ishlaydi?",o:["Tarmoq darajasida","Faqat ilova darajasida","Faqat fizik darajada","Faqat foydalanuvchi darajasida"],a:0},
+    {q:"IPsec tunnel rejimi odatda nimaga qo'llanadi?",o:["Saytlararo VPN ga","Printer almashishga","SSID yashirishga","Monitor kengaytirishga"],a:0},
+    {q:"SSH odatda nimaga xizmat qiladi?",o:["Masofaviy xavfsiz boshqaruvga","Elektron jadval tuzishga","Rasm chizishga","Printer qog'ozini chiqarishga"],a:0},
+    {q:"SSH Telnet ga nisbatan nega xavfsiz?",o:["Trafikni shifrlaydi","Kabelsiz ishlaydi","Faqat rangli bo'lgani uchun","Parolni yashirmagani uchun"],a:0},
+    {q:"Kalit asosidagi SSH autentifikatsiyasi nimani kamaytiradi?",o:["Parolga bog'liq xavflarni","Monitor o'lchamini","Disk hajmini","Wi-Fi signalini"],a:0},
+    {q:"Qaysi protokol IP paketlarni himoyalaydi?",o:["IPsec","SMTP","POP3","ARP"],a:0},
+    {q:"Qaysi chora TLS xavfsizligini oshiradi?",o:["Eski versiyalarni o'chirib, kuchli cipher tanlash","Hammani admin qilish","Parolni ochiq yuborish","HTTP ga qaytish"],a:0},
+    {q:"Sertifikatning asosiy vazifasi nima?",o:["Tomon identifikatsiyasini tasdiqlash","Kabelni uzaytirish","Diskni formatlash","Printerni ulash"],a:0},
+    {q:"HTTPS asosan qaysi juftlikka asoslanadi?",o:["HTTP + TLS","FTP + ARP","DNS + DHCP","ICMP + RIP"],a:0},
+    {q:"SSH da qaysi amaliyot noto'g'ri hisoblanadi?",o:["Parolsiz, nazoratsiz root login","Kalit asosida kirish","Portni cheklash","Audit yuritish"],a:0},
+    {q:"Shifrlash protokollarida konfiguratsiya nega muhim?",o:["Noto'g'ri sozlash himoyani zaiflashtiradi","U hech narsaga ta'sir qilmaydi","Faqat dizayn uchun kerak","Faqat fayl nomi uchun kerak"],a:0},
+    {q:"IPsec ning transport rejimi nimaga yaqin?",o:["Hostlararo himoyalangan ulanishga","Faqat qog'oz hujjatga","Faqat Wi-Fi nomiga","Faqat USB diskka"],a:0}
+  ]},
+  {t:"11-mavzu",full:"IDS/IPS tizimlari",qs:[
+    {q:"IDS qisqartmasi nimani anglatadi?",o:["Intrusion Detection System","Internal Data Switch","Internet Delivery Service","Integrated Device Security"],a:0},
+    {q:"IPS ning asosiy qo'shimcha imkoniyati nima?",o:["Shubhali trafikni bloklash","Faqat printerni tekshirish","Faqat log saqlash","Faqat kabel almashish"],a:0},
+    {q:"Firewall bilan IDS/IPS o'rtasidagi farq nimada?",o:["IDS/IPS hujum alomatlarini chuqurroq tahlil qiladi","Firewall faqat rasm chizadi","IDS kabelni almashtiradi","IPS printerga xizmat qiladi"],a:0},
+    {q:"Signatura asosidagi aniqlash nimaga tayangan?",o:["Oldindan ma'lum hujum namunasiga","Faqat tasodifga","Faqat rangga","Faqat IP uzunligiga"],a:0},
+    {q:"Anomaliya asosidagi aniqlash nimani qidiradi?",o:["Oddiy xatti-harakatdan og'ishni","Faqat fayl nomini","Faqat printer tovushini","Faqat kabel rangini"],a:0},
+    {q:"False positive nimani bildiradi?",o:["Xavf yo'q bo'lsa ham hujum deb topishni","Haqiqiy hujumni aniqlashni","Parolni yangilashni","Serverni ko'chirishni"],a:0},
+    {q:"IPS odatda qaysi rejimda ishlaydi?",o:["Inline","Offline only","Paper mode","Manual print"],a:0},
+    {q:"Qoidalarni tuning qilishning maqsadi nima?",o:["Aniqlikni oshirish va keraksiz ogohlantirishni kamaytirish","Monitorni kengaytirish","Internetni o'chirish","Printerga toner quyish"],a:0},
+    {q:"IDS/IPS qaysi tahdidni aniqlashi mumkin?",o:["Brute-force yoki exploit urinishlarini","Faqat elektr uzilishini","Faqat qog'oz tugashini","Faqat klaviatura nosozligini"],a:0},
+    {q:"SIEM bilan integratsiya nimani beradi?",o:["Markazlashgan ko'rinish va tezkor tahlilni","Faqat tasvirni kattalashtirishni","Faqat hujjat chop etishni","Faqat skaner tezligini"],a:0},
+    {q:"IDS va IPS nimaning o'rnini to'liq bosa olmaydi?",o:["Firewallning","Qog'ozning","Konditsionerning","Stolning"],a:0},
+    {q:"Qaysi yondashuv noma'lum xatti-harakatni topishga yaqin?",o:["Anomaliya tahlili","Faqat signatura","Faqat WEP","Faqat DHCP"],a:0},
+    {q:"Network IDS qayerda trafikni ko'radi?",o:["Tarmoq oqimida","Faqat qattiq diskda","Faqat printer ichida","Faqat klaviaturada"],a:0},
+    {q:"Host-based IDS nimaga yaqin?",o:["Alohida host yoki serverni kuzatishga","Faqat kabel magistraliga","Faqat Wi-Fi signaliga","Faqat proektorga"],a:0},
+    {q:"IDS/IPS samaradorligi nimaga bog'liq?",o:["Sozlash, kontekst va javob jarayoniga","Faqat narxiga","Faqat rangiga","Faqat logotipiga"],a:0}
+  ]},
+  {t:"12-mavzu",full:"VPN",qs:[
+    {q:"VPN ning asosiy maqsadi nima?",o:["Himoyalangan mantiqiy aloqa kanali yaratish","Faqat Wi-Fi nomini yashirish","Faqat printer ulash","Faqat monitor rangini o'zgartirish"],a:0},
+    {q:"Qaysi VPN turi individual foydalanuvchi uchun mos?",o:["Remote access VPN","Site-to-site VPN only","WEP tunnel","Open relay"],a:0},
+    {q:"Qaysi VPN turi ikki tarmoqni bog'lashga mos?",o:["Site-to-site VPN","POP3 VPN","SMTP VPN","ARP VPN"],a:0},
+    {q:"VPN xavfsizligining asosiy komponenti qaysi?",o:["Shifrlash va autentifikatsiya","Faqat SSID","Faqat qog'oz hujjat","Faqat ofis mebeli"],a:0},
+    {q:"Split tunneling nimani bildiradi?",o:["Trafikning bir qismi VPN dan, bir qismi to'g'ridan-to'g'ri chiqishini","Kabelni ikkiga bo'lishni","Serverni ikki marta yoqishni","Parolni ikki qismga ajratishni"],a:0},
+    {q:"VPN bilan birga qaysi chora ayniqsa tavsiya etiladi?",o:["MFA","Parolsiz kirish","Umumiy account","Ochiq hotspot"],a:0},
+    {q:"VPN loglari nimaga yordam beradi?",o:["Ulanishlarni tahlil qilish va tekshirishga","Faqat printer navbatiga","Faqat ekran sozlamasiga","Faqat yoritishga"],a:0},
+    {q:"VPN noto'g'ri joriy etilsa nima bo'lishi mumkin?",o:["Nazorat qilinmaydigan kirish nuqtasiga aylanishi mumkin","Har doim mukammal himoya beradi","Internetni to'liq yo'q qiladi","Faqat printerni sekinlashtiradi"],a:0},
+    {q:"DRP qisqartmasi nimani anglatadi?",o:["Disaster Recovery Plan","Direct Router Port","Dynamic Remote Print","Digital Risk Package"],a:0},
+    {q:"BCP qisqartmasi nimani anglatadi?",o:["Business Continuity Plan","Basic Cable Policy","Binary Control Point","Backup Channel Program"],a:0},
+    {q:"Site-to-site VPN ga misol qaysi?",o:["Bosh ofis va filial tarmog'ini bog'lash","Bitta xodimning uyidan kirishi","Printerni Wi-Fi ga ulash","Brauzer tarixini tozalash"],a:0},
+    {q:"IPsec VPN odatda nimaga mos?",o:["Filiallararo va tarmoq-tarmoq ulanishga","Printer almashishga","Rasm chizishga","Faqat elektron pochta uchun"],a:0},
+    {q:"Masofaviy ishchi qurilmasi qanday bo'lishi kerak?",o:["Yangilangan va siyosatga mos","Nazoratsiz va antivirussiz","Parolsiz","Logsiz"],a:0},
+    {q:"Qaysi yondashuv VPN ni xavfsizroq qiladi?",o:["Sertifikat, MFA va monitoring","Umumiy parol tarqatish","Eski protokollarni yoqish","Loglarni o'chirish"],a:0},
+    {q:"Xavfsiz aloqa kanali faqat nimadan iborat emas?",o:["Faqat tuneldan emas, nazoratlardan ham iborat","Faqat kabel rangidan","Faqat ekran o'lchamidan","Faqat ofis haroratidan"],a:0}
+  ]}
+];
 
-/* ══════════════════════════════════════
-   STATE
-══════════════════════════════════════ */
-const PASS='jony2005@';
-let isAdmin=false, isDark=true;
-let profData={name:'Jony',nik:'@jony_dev',role:'Full-Stack Developer',city:'Toshkent, UZ',bio:'Toshkentdan yosh dasturchi.',avatar_url:''};
-let libItems=[], galItems=[], playlist=[], chatMsgs=[];
-let curIdx=-1, isPlay=false;
-let galFilt='all', pubGalFilt='all';
+let cur={t:0,q:0,correct:0,wrong:0,answered:false,qs:[]};
 
-/* ══════════════════════════════════════
-   TOAST
-══════════════════════════════════════ */
-function toast(msg,type='ok'){
-  const t=document.createElement('div');
-  t.className='toast '+type;
-  t.textContent=(type==='ok'?'✓ ':'✕ ')+msg;
-  document.body.appendChild(t);
-  setTimeout(()=>t.remove(),3000);
-}
+function shuffle(arr){return [...arr].sort(()=>Math.random()-0.5);}
 
-/* ══════════════════════════════════════
-   THEME
-══════════════════════════════════════ */
-function toggleTheme(){
-  isDark=!isDark;
-  document.documentElement.setAttribute('data-theme',isDark?'dark':'light');
-  ['pub-theme-btn','adm-theme-btn'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=isDark?'🌙':'☀️';});
-}
-
-/* ══════════════════════════════════════
-   PUBLIC TABS
-══════════════════════════════════════ */
-function pubTab(name,btn){
-  document.querySelectorAll('.pub-panel').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.pub-tab-btn').forEach(b=>b.classList.remove('active'));
-  document.getElementById('pub-'+name).classList.add('active');
-  btn.classList.add('active');
-  if(name==='gallery')renderPubGallery(pubGalFilt);
-  if(name==='music')renderPubPlaylist();
-  if(name==='chat'){loadChat();renderChat();}
-  if(name==='library')renderPubLibrary();
-}
-
-/* ══════════════════════════════════════
-   LOGIN
-══════════════════════════════════════ */
-function openLogin(){document.getElementById('login-modal').classList.add('open');setTimeout(()=>document.getElementById('pwd-inp').focus(),100);}
-function closeLogin(){document.getElementById('login-modal').classList.remove('open');document.getElementById('pwd-inp').value='';document.getElementById('err-msg').style.display='none';}
-function toggleEye(){const i=document.getElementById('pwd-inp'),b=document.getElementById('eye-btn');i.type=i.type==='password'?'text':'password';b.textContent=i.type==='password'?'👁':'🙈';}
-function doLogin(){
-  if(document.getElementById('pwd-inp').value===PASS){
-    isAdmin=true;
-    document.getElementById('login-modal').classList.remove('open');
-    document.getElementById('pub-screen').style.display='none';
-    document.getElementById('admin-shell').style.display='block';
-    startClock(); loadProfile(); loadLibrary(); loadGallery(); loadMusicList(); loadChat();
-  } else {
-    document.getElementById('err-msg').style.display='block';
-    const b=document.querySelector('.login-box');b.classList.remove('shake');void b.offsetWidth;b.classList.add('shake');
-    document.getElementById('pwd-inp').value='';
-  }
-}
-function doLogout(){isAdmin=false;document.getElementById('admin-shell').style.display='none';document.getElementById('pub-screen').style.display='flex';pauseAudio();}
-
-/* ══════════════════════════════════════
-   ADMIN TABS
-══════════════════════════════════════ */
-function adminTab(name,btn){
-  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.t-tab').forEach(b=>b.classList.remove('active'));
-  document.getElementById('panel-'+name).classList.add('active');
-  if(btn)btn.classList.add('active');
-  if(name==='chat'){loadChat();renderChat();}
-}
-
-/* ══════════════════════════════════════
-   CLOCK
-══════════════════════════════════════ */
-function startClock(){
-  const D=['Yakshanba','Dushanba','Seshanba','Chorshanba','Payshanba','Juma','Shanba'];
-  const M=['Yanvar','Fevral','Mart','Aprel','May','Iyun','Iyul','Avgust','Sentabr','Oktabr','Noyabr','Dekabr'];
-  function tick(){
-    const n=new Date();
-    document.getElementById('cl-time').textContent=[n.getHours(),n.getMinutes(),n.getSeconds()].map(x=>String(x).padStart(2,'0')).join(':');
-    document.getElementById('cl-date').textContent=`${D[n.getDay()]}, ${n.getDate()} ${M[n.getMonth()]} ${n.getFullYear()}`;
-    const h=n.getHours();
-    document.getElementById('cl-greet').textContent=h<6?'Yaxshi tun 🌙':h<12?'Xayrli tong ☀️':h<17?'Xayrli kun 👋':h<21?'Xayrli kech 🌆':'Yaxshi tun 🌙';
-  }
-  tick();setInterval(tick,1000);
+function initTopic(i){
+  cur={t:i,q:0,correct:0,wrong:0,answered:false,qs:shuffle(ALL[i].qs)};
+  document.querySelectorAll('.topic-btn').forEach((b,j)=>b.classList.toggle('active',j===i));
+  updateStats(); renderQ();
 }
 
 function updateStats(){
-  document.getElementById('st-lib').textContent=libItems.length;
-  document.getElementById('st-gal').textContent=galItems.length;
-  document.getElementById('st-mus').textContent=playlist.length;
-  document.getElementById('st-chat').textContent=chatMsgs.length;
+  const total=cur.correct+cur.wrong;
+  document.getElementById('sTotal').textContent=total;
+  document.getElementById('sCorrect').textContent=cur.correct;
+  document.getElementById('sWrong').textContent=cur.wrong;
+  document.getElementById('sPct').textContent=total>0?Math.round(cur.correct/total*100)+'%':'—';
+  const p=cur.qs.length>0?Math.round(cur.q/cur.qs.length*100):0;
+  document.getElementById('progFill').style.width=p+'%';
+  document.getElementById('progPct').textContent=p+'%';
+  document.getElementById('progText').textContent=ALL[cur.t].full+' — Savol '+Math.min(cur.q+1,cur.qs.length)+'/'+cur.qs.length;
 }
 
-/* ══════════════════════════════════════
-   PROFILE — Supabase DB
-══════════════════════════════════════ */
-async function loadProfile(){
-  const {data}=await sb.from('profile').select('*').eq('id',1).single();
-  if(data){profData=data;applyProfile();}
+function renderQ(){
+  const area=document.getElementById('qArea');
+  if(cur.q>=cur.qs.length){renderDone(area);return;}
+  const q=cur.qs[cur.q];
+  const opts=q.o.map((o,i)=>`<button class="opt" onclick="pick(${i})">${String.fromCharCode(65+i)}) ${o}</button>`).join('');
+  area.innerHTML=`<div class="card">
+    <div class="q-num">Savol ${cur.q+1} / ${cur.qs.length} — ${ALL[cur.t].full}</div>
+    <div class="q-text">${q.q}</div>
+    <div class="options">${opts}</div>
+    <div class="feedback" id="fb"></div>
+    <button class="next-btn" id="nxt" onclick="nextQ()">Keyingi savol →</button>
+  </div>`;
 }
 
-function applyProfile(){
-  // Public
-  document.getElementById('pub-name').textContent=profData.name||'Jony';
-  document.getElementById('pub-nik').textContent=(profData.nik||'@jony_dev')+' · '+(profData.city||'Toshkent');
-  document.getElementById('pub-bio').textContent=profData.bio||'';
-  document.getElementById('pub-bio-hero').textContent=profData.bio||'';
-  // Admin
-  document.getElementById('adm-nik-disp').textContent=profData.nik||'@jony_dev';
-  document.getElementById('adm-loc-disp').textContent='📍 '+(profData.city||'Toshkent');
-  document.getElementById('pf-name').value=profData.name||'Jony';
-  document.getElementById('pf-nik').value=profData.nik||'@jony_dev';
-  document.getElementById('pf-role').value=profData.role||'Developer';
-  document.getElementById('pf-city').value=profData.city||'Toshkent, UZ';
-  document.getElementById('pf-bio').value=profData.bio||'';
-  // Avatar
-  if(profData.avatar_url){
-    ['adm-av-img','pub-av-img'].forEach(id=>{const i=document.getElementById(id);i.src=profData.avatar_url;i.classList.add('show');});
-    document.getElementById('adm-av-em').style.display='none';
-    document.getElementById('pub-av-em').style.display='none';
-  }
+function pick(i){
+  if(cur.answered)return;
+  cur.answered=true;
+  const q=cur.qs[cur.q];
+  const btns=document.querySelectorAll('.opt');
+  btns.forEach(b=>b.disabled=true);
+  btns[i].classList.add(i===q.a?'correct':'wrong');
+  if(i!==q.a)btns[q.a].classList.add('correct');
+  const fb=document.getElementById('fb');
+  if(i===q.a){cur.correct++;fb.className='feedback show ok';fb.textContent='✓ To\'g\'ri!';}
+  else{cur.wrong++;fb.className='feedback show no';fb.textContent='✗ Noto\'g\'ri. To\'g\'ri javob: '+String.fromCharCode(65+q.a)+') '+q.o[q.a];}
+  updateStats();
+  document.getElementById('nxt').style.display='block';
 }
 
-async function saveProfile(){
-  const upd={
-    name:document.getElementById('pf-name').value.trim()||'Jony',
-    nik:document.getElementById('pf-nik').value.trim()||'@jony_dev',
-    role:document.getElementById('pf-role').value.trim()||'Developer',
-    city:document.getElementById('pf-city').value.trim()||'Toshkent, UZ',
-    bio:document.getElementById('pf-bio').value.trim(),
-    avatar_url:profData.avatar_url||''
-  };
-  const {error}=await sb.from('profile').update(upd).eq('id',1);
-  if(error){toast('Xato: '+error.message,'err');return;}
-  profData={...profData,...upd};
-  applyProfile();
-  const b=document.getElementById('saved-badge');b.style.display='inline';setTimeout(()=>b.style.display='none',2000);
-  toast('Profil saqlandi!');
+function nextQ(){cur.q++;cur.answered=false;updateStats();renderQ();}
+
+function renderDone(area){
+  const pct=Math.round(cur.correct/cur.qs.length*100);
+  let badge,cls;
+  if(pct>=85){badge='A\'lo natija! 🎉';cls='badge-a';}
+  else if(pct>=70){badge='Yaxshi 👍';cls='badge-b';}
+  else if(pct>=50){badge='O\'rtacha 📖';cls='badge-c';}
+  else{badge='Yana mashq kerak 💪';cls='badge-d';}
+  area.innerHTML=`<div class="card done">
+    <div class="done-badge ${cls}">${badge}</div>
+    <div class="done-pct">${pct}%</div>
+    <div class="done-info">${cur.correct} ta to'g'ri / ${cur.qs.length} ta savol</div>
+    <button class="retry-btn" onclick="initTopic(${cur.t})">🔄 Qayta urinish</button>
+    ${cur.t<ALL.length-1?`<button class="retry-btn" style="background:#059669" onclick="initTopic(${cur.t+1})">Keyingi mavzu →</button>`:''}
+  </div>`;
 }
 
-async function changeAvatar(inp){
-  const file=inp.files[0];if(!file)return;
-  const path=`avatars/avatar_${Date.now()}.${file.name.split('.').pop()}`;
-  toast('Rasm yuklanmoqda...');
-  const {error}=await sb.storage.from('jony-files').upload(path,file,{upsert:true});
-  if(error){toast('Xato: '+error.message,'err');return;}
-  const {data:{publicUrl}}=sb.storage.from('jony-files').getPublicUrl(path);
-  profData.avatar_url=publicUrl;
-  await sb.from('profile').update({avatar_url:publicUrl}).eq('id',1);
-  ['adm-av-img','pub-av-img'].forEach(id=>{const i=document.getElementById(id);i.src=publicUrl;i.classList.add('show');});
-  document.getElementById('adm-av-em').style.display='none';
-  document.getElementById('pub-av-em').style.display='none';
-  toast('Rasm saqlandi!');
-}
-
-/* ══════════════════════════════════════
-   LIBRARY — Supabase Storage + DB
-══════════════════════════════════════ */
-async function handleLibFiles(files){
-  for(const f of Array.from(files)){
-    if(f.type!=='application/pdf'&&!f.name.endsWith('.pdf'))continue;
-    const path=`library/${Date.now()}_${f.name.replace(/\s/g,'_')}`;
-    toast('Yuklanmoqda: '+f.name);
-    const {error}=await sb.storage.from('jony-files').upload(path,f,{upsert:false});
-    if(error){toast('Xato: '+error.message,'err');continue;}
-    const {data:{publicUrl}}=sb.storage.from('jony-files').getPublicUrl(path);
-    await sb.from('library').insert({name:f.name.replace(/\.pdf$/i,''),url:publicUrl,size:fmtSz(f.size)});
-    toast(f.name+' yuklandi!');
-  }
-  await loadLibrary();
-}
-async function loadLibrary(){
-  const {data}=await sb.from('library').select('*').order('created_at',{ascending:false});
-  libItems=data||[];
-  renderAdmLibrary();renderPubLibrary();updateStats();
-}
-function renderAdmLibrary(){
-  const g=document.getElementById('adm-lib-grid'),e=document.getElementById('adm-lib-empty');
-  if(!libItems.length){e.style.display='block';g.innerHTML='';return;}
-  e.style.display='none';
-  g.innerHTML=libItems.map(b=>`<div class="lib-card" onclick="openPdf('${b.url}','${esc(b.name)}')">
-    <div class="lc-icon">📖</div><div class="lc-title">${esc(b.name)}</div>
-    <div class="lc-size">${b.size||''}</div><div class="lc-tag">→ PDF o'qish</div>
-    <button class="card-del" onclick="event.stopPropagation();delLib(${b.id})">🗑</button>
-  </div>`).join('');
-}
-function renderPubLibrary(){
-  const g=document.getElementById('pub-lib-grid'),e=document.getElementById('pub-lib-empty');
-  if(!libItems.length){e.style.display='block';g.innerHTML='';return;}
-  e.style.display='none';
-  g.innerHTML=libItems.map(b=>`<div class="lib-card" onclick="openPdf('${b.url}','${esc(b.name)}')">
-    <div class="lc-icon">📖</div><div class="lc-title">${esc(b.name)}</div>
-    <div class="lc-size">${b.size||''}</div><div class="lc-tag">→ Ochib o'qish</div>
-  </div>`).join('');
-}
-async function delLib(id){if(!confirm('O\'chirilsinmi?'))return;await sb.from('library').delete().eq('id',id);toast('O\'chirildi!');await loadLibrary();}
-function openPdf(url,name){document.getElementById('pdf-title').textContent=name;document.getElementById('pdf-frame').src=url;document.getElementById('pdf-modal').classList.add('open');}
-function closePdf(){document.getElementById('pdf-modal').classList.remove('open');document.getElementById('pdf-frame').src='';}
-
-/* ══════════════════════════════════════
-   GALLERY — Supabase Storage + DB
-══════════════════════════════════════ */
-async function handleGalFiles(files){
-  const cat=document.getElementById('gal-cat-sel').value;
-  const desc=prompt('Tavsif kiriting (ixtiyoriy):\nMasalan: BMW M5 F90, 600 ot kuch')||'';
-  for(const f of Array.from(files)){
-    if(!f.type.startsWith('image/'))continue;
-    const path=`gallery/${cat}/${Date.now()}_${f.name.replace(/\s/g,'_')}`;
-    toast('Rasm yuklanmoqda...');
-    const {error}=await sb.storage.from('jony-files').upload(path,f,{upsert:false});
-    if(error){toast('Xato: '+error.message,'err');continue;}
-    const {data:{publicUrl}}=sb.storage.from('jony-files').getPublicUrl(path);
-    await sb.from('gallery').insert({url:publicUrl,category:cat,description:desc});
-    toast('Rasm yuklandi!');
-  }
-  await loadGallery();
-}
-async function loadGallery(){
-  const {data}=await sb.from('gallery').select('*').order('created_at',{ascending:false});
-  galItems=data||[];
-  renderAdmGallery(galFilt);renderPubGallery(pubGalFilt);updateStats();
-}
-function admGalFilter(cat,btn){galFilt=cat;document.querySelectorAll('#adm-gal-cats .cat-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderAdmGallery(cat);}
-function pubGalFilter(cat,btn){pubGalFilt=cat;document.querySelectorAll('#pub-gal-cats .cat-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderPubGallery(cat);}
-function renderAdmGallery(cat){
-  const g=document.getElementById('adm-gal-grid'),e=document.getElementById('adm-gal-empty');
-  const items=galItems.filter(x=>cat==='all'||x.category===cat);
-  if(!items.length){e.style.display='block';g.innerHTML='';return;}
-  e.style.display='none';
-  g.innerHTML=items.map(x=>`<div class="gal-item" onclick="openImgLb('${x.url}','${esc(x.description||'')}')">
-    <div class="gal-thumb"><img src="${x.url}" loading="lazy" style="width:100%;height:100%;object-fit:cover"></div>
-    ${x.description?`<div class="gal-desc-txt">${esc(x.description)}</div>`:''}
-    <div class="gal-ov">🔍 Ko'rish</div>
-    <button class="gal-del-btn" onclick="event.stopPropagation();delGal(${x.id})">🗑</button>
-  </div>`).join('');
-}
-function renderPubGallery(cat){
-  const g=document.getElementById('pub-gal-grid'),e=document.getElementById('pub-gal-empty');
-  const items=galItems.filter(x=>cat==='all'||x.category===cat);
-  if(!items.length){e.style.display='block';g.innerHTML='';return;}
-  e.style.display='none';
-  g.innerHTML=items.map(x=>`<div class="gal-item" onclick="openImgLb('${x.url}','${esc(x.description||'')}')">
-    <div class="gal-thumb"><img src="${x.url}" loading="lazy" style="width:100%;height:100%;object-fit:cover"></div>
-    ${x.description?`<div class="gal-desc-txt">${esc(x.description)}</div>`:''}
-    <div class="gal-ov">🔍 Ko'rish</div>
-  </div>`).join('');
-}
-async function delGal(id){if(!confirm('Rasm o\'chirilsinmi?'))return;await sb.from('gallery').delete().eq('id',id);toast('O\'chirildi!');await loadGallery();}
-function openImgLb(url,desc){
-  document.getElementById('img-lb-content').innerHTML=`<img class="img-lb-img" src="${url}">${desc?`<div class="img-lb-desc">${esc(desc)}</div>`:''}`;
-  document.getElementById('img-lb').classList.add('open');
-}
-function closeImgLb(){document.getElementById('img-lb').classList.remove('open');}
-
-/* ══════════════════════════════════════
-   MUSIC — Supabase Storage + DB
-══════════════════════════════════════ */
-const aud=document.getElementById('aud');
-const ME=['🎵','🎶','🎸','🎹','🥁','🎺','🎻','🎧','🔊','🌊','🔥','💫'];
-function randME(){return ME[Math.floor(Math.random()*ME.length)];}
-
-async function handleMusFiles(files){
-  for(const f of Array.from(files)){
-    if(!f.type.startsWith('audio/'))continue;
-    const path=`music/${Date.now()}_${f.name.replace(/\s/g,'_')}`;
-    toast('Musiqa yuklanmoqda: '+f.name);
-    const {error}=await sb.storage.from('jony-files').upload(path,f,{upsert:false});
-    if(error){toast('Xato: '+error.message,'err');continue;}
-    const {data:{publicUrl}}=sb.storage.from('jony-files').getPublicUrl(path);
-    const emoji=randME();
-    await sb.from('music').insert({name:f.name.replace(/\.(mp3|wav|ogg|flac|aac|m4a)$/i,'').replace(/_/g,' '),url:publicUrl,size:fmtSz(f.size),emoji});
-    toast(f.name+' yuklandi!');
-  }
-  await loadMusicList();
-}
-
-async function loadMusicList(){
-  const {data}=await sb.from('music').select('*').order('created_at',{ascending:true});
-  playlist=data||[];
-  renderAdmPlaylist();renderPubPlaylist();updateStats();
-  if(curIdx===-1&&playlist.length>0)loadTrack(0);
-}
-
-function renderAdmPlaylist(){
-  const list=document.getElementById('adm-pl-list'),empty=document.getElementById('adm-pl-empty');
-  if(!playlist.length){empty.style.display='block';list.innerHTML='';return;}
-  empty.style.display='none';
-  list.innerHTML=playlist.map((t,i)=>`<div class="pi${i===curIdx?' active':''}" onclick="selectTrack(${i})">
-    <span class="pi-n">${i===curIdx&&isPlay?'▶':String(i+1).padStart(2,'0')}</span>
-    <div class="pi-thumb">${t.emoji||'🎵'}</div>
-    <div class="pi-info"><div class="pi-name">${esc(t.name)}</div><div class="pi-sz">${t.size||''}</div></div>
-    <button class="pi-del" onclick="event.stopPropagation();delTrack(${t.id})">🗑</button>
-  </div>`).join('');
-}
-function renderPubPlaylist(){
-  const list=document.getElementById('pub-pl-list'),empty=document.getElementById('pub-pl-empty');
-  if(!playlist.length){empty.style.display='block';list.innerHTML='';return;}
-  empty.style.display='none';
-  list.innerHTML=playlist.map((t,i)=>`<div class="pi${i===curIdx?' active':''}" onclick="selectTrack(${i})">
-    <span class="pi-n">${i===curIdx&&isPlay?'▶':String(i+1).padStart(2,'0')}</span>
-    <div class="pi-thumb">${t.emoji||'🎵'}</div>
-    <div class="pi-info"><div class="pi-name">${esc(t.name)}</div><div class="pi-sz">${t.size||''}</div></div>
-  </div>`).join('');
-}
-function loadTrack(i){
-  if(i<0||i>=playlist.length)return;
-  curIdx=i;const t=playlist[i];
-  aud.src=t.url;
-  ['adm','pub'].forEach(p=>{
-    const d=document.getElementById(p+'-disc');if(d){d.textContent=t.emoji||'🎵';d.classList.toggle('on',isPlay);}
-    const nt=document.getElementById(p+'-now-t');if(nt)nt.textContent=t.name;
-    const na=document.getElementById(p+'-now-a');if(na)na.textContent=(t.emoji||'🎵')+' · '+(t.size||'');
-    const fill=document.getElementById(p+'-fill');if(fill)fill.style.width='0%';
-    const cur=document.getElementById(p+'-cur');if(cur)cur.textContent='0:00';
-    const tot=document.getElementById(p+'-tot');if(tot)tot.textContent='0:00';
-  });
-  renderAdmPlaylist();renderPubPlaylist();
-}
-function selectTrack(i){loadTrack(i);if(isPlay)aud.play().catch(()=>{});}
-function togglePlay(){if(!playlist.length)return;if(curIdx===-1)loadTrack(0);isPlay?pauseAudio():playAudio();}
-function playAudio(){
-  aud.play().then(()=>{
-    isPlay=true;
-    ['adm','pub'].forEach(p=>{const b=document.getElementById(p+'-play-btn');if(b)b.textContent='⏸';const d=document.getElementById(p+'-disc');if(d)d.classList.add('on');});
-    document.querySelectorAll('.eb').forEach(b=>b.classList.remove('off'));
-    renderAdmPlaylist();renderPubPlaylist();
-  }).catch(()=>{});
-}
-function pauseAudio(){
-  aud.pause();isPlay=false;
-  ['adm','pub'].forEach(p=>{const b=document.getElementById(p+'-play-btn');if(b)b.textContent='▶';const d=document.getElementById(p+'-disc');if(d)d.classList.remove('on');});
-  document.querySelectorAll('.eb').forEach(b=>b.classList.add('off'));
-  renderAdmPlaylist();renderPubPlaylist();
-}
-function nextT(){if(!playlist.length)return;selectTrack((curIdx+1)%playlist.length);if(isPlay)playAudio();}
-function prevT(){if(!playlist.length)return;selectTrack((curIdx-1+playlist.length)%playlist.length);if(isPlay)playAudio();}
-async function delTrack(id){
-  if(!confirm('Qo\'shiq o\'chirilsinmi?'))return;
-  await sb.from('music').delete().eq('id',id);
-  toast('O\'chirildi!');
-  if(curIdx>=0&&playlist[curIdx]&&playlist[curIdx].id===id){pauseAudio();curIdx=-1;aud.src='';}
-  await loadMusicList();
-}
-async function clearAllMusic(){
-  if(!confirm('Barcha qo\'shiqlar o\'chirilsinmi?'))return;
-  await sb.from('music').delete().neq('id',0);
-  pauseAudio();curIdx=-1;aud.src='';
-  await loadMusicList();toast('Playlist tozalandi!');
-}
-function setVol(v){aud.volume=v;const p=document.getElementById('adm-vol-pct');if(p)p.textContent=Math.round(v*100)+'%';}
-function seekAudio(e){if(!aud.duration)return;const r=e.currentTarget.getBoundingClientRect();aud.currentTime=Math.max(0,Math.min(1,(e.clientX-r.left)/r.width))*aud.duration;}
-aud.addEventListener('timeupdate',()=>{
-  if(!aud.duration)return;
-  const pct=(aud.currentTime/aud.duration)*100;
-  ['adm','pub'].forEach(p=>{const f=document.getElementById(p+'-fill');if(f)f.style.width=pct+'%';const c=document.getElementById(p+'-cur');if(c)c.textContent=fmtT(aud.currentTime);});
+// Build topic buttons
+const tb=document.getElementById('topicBtns');
+ALL.forEach((t,i)=>{
+  const b=document.createElement('button');
+  b.className='topic-btn';
+  b.textContent=t.t;
+  b.title=t.full;
+  b.onclick=()=>initTopic(i);
+  tb.appendChild(b);
 });
-aud.addEventListener('loadedmetadata',()=>{ ['adm','pub'].forEach(p=>{const t=document.getElementById(p+'-tot');if(t)t.textContent=fmtT(aud.duration);}); });
-aud.addEventListener('ended',()=>nextT());
-aud.volume=0.8;
-
-/* ══════════════════════════════════════
-   CHAT — Supabase DB realtime
-══════════════════════════════════════ */
-async function loadChat(){
-  const {data}=await sb.from('chat_messages').select('*').order('created_at',{ascending:true}).limit(100);
-  chatMsgs=data||[];renderChat();updateStats();
-}
-async function sendChat(scope){
-  const nameEl=scope==='adm'?null:document.getElementById('pub-chat-name');
-  const msgEl=document.getElementById(scope+'-chat-msg');
-  const name=scope==='adm'?'Jony (Admin)':(nameEl?nameEl.value.trim():'');
-  const text=msgEl?msgEl.value.trim():'';
-  if(!name||!text)return;
-  const {data,error}=await sb.from('chat_messages').insert({name,text}).select().single();
-  if(error){toast('Xato: '+error.message,'err');return;}
-  if(msgEl)msgEl.value='';
-  chatMsgs.push(data);renderChat();updateStats();
-}
-function renderChat(){
-  ['pub','adm'].forEach(scope=>{
-    const el=document.getElementById(scope+'-chat-msgs');if(!el)return;
-    el.innerHTML=chatMsgs.map(m=>{
-      const own=m.name.includes('Admin');
-      return`<div class="chat-msg${own?' own':''}">
-        <div class="cm-av${own?' owner':''}">${own?'👨‍💻':'👤'}</div>
-        <div><div class="cm-name">${esc(m.name)}</div>
-        <div class="cm-txt">${esc(m.text)}</div>
-        <div class="cm-time">${fmtCT(m.created_at)}</div></div>
-      </div>`;
-    }).join('');
-    el.scrollTop=el.scrollHeight;
-  });
-  ['pub','adm'].forEach(s=>{const el=document.getElementById('chat-cnt-'+s);if(el)el.textContent=chatMsgs.length+' xabar';});
-}
-sb.channel('chat-rt').on('postgres_changes',{event:'INSERT',schema:'public',table:'chat_messages'},p=>{
-  chatMsgs.push(p.new);renderChat();updateStats();
-}).subscribe();
-
-/* ══════════════════════════════════════
-   UTILS
-══════════════════════════════════════ */
-function fmtSz(b){return b>1e6?(b/1e6).toFixed(1)+'MB':(b/1e3).toFixed(0)+'KB';}
-function fmtT(s){if(!s||isNaN(s))return'0:00';return`${Math.floor(s/60)}:${String(Math.floor(s%60)).padStart(2,'0')}`;}
-function fmtCT(ts){const d=new Date(ts);return`${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;}
-function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML;}
-
-/* ══════════════════════════════════════
-   INIT
-══════════════════════════════════════ */
-(async()=>{
-  await loadProfile();
-  await loadLibrary();
-  await loadGallery();
-  await loadMusicList();
-  await loadChat();
-})();
 </script>
 </body>
 </html>
