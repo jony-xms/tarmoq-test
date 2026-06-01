@@ -4,100 +4,162 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tarmoq Xavfsizligi Testi</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0f2f5; min-height: 100vh; padding: 20px; }
-  .container { max-width: 800px; margin: 0 auto; }
-  h1 { text-align: center; color: #1a1a2e; font-size: 26px; margin-bottom: 8px; }
-  .subtitle { text-align: center; color: #666; margin-bottom: 20px; font-size: 14px; }
+:root {
+  --bg: #0a0e1a;
+  --surface: #111827;
+  --surface2: #1a2235;
+  --border: rgba(255,255,255,0.08);
+  --accent: #4f8ef7;
+  --accent2: #7c3aed;
+  --green: #10b981;
+  --red: #f43f5e;
+  --yellow: #f59e0b;
+  --text: #f1f5f9;
+  --muted: #64748b;
+  --muted2: #94a3b8;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
 
-  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px; }
-  .stat { background: white; border-radius: 12px; padding: 14px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
-  .stat-n { font-size: 26px; font-weight: 700; }
-  .stat-l { font-size: 12px; color: #888; margin-top: 2px; }
-  .green { color: #22c55e; }
-  .red { color: #ef4444; }
-  .blue { color: #3b82f6; }
+/* Background grid */
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(79,142,247,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(79,142,247,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0}
 
-  .progress-wrap { background: white; border-radius: 12px; padding: 14px 18px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
-  .progress-top { display: flex; justify-content: space-between; font-size: 13px; color: #555; margin-bottom: 8px; }
-  .progress-bar { background: #e5e7eb; border-radius: 8px; height: 10px; overflow: hidden; }
-  .progress-fill { height: 100%; background: linear-gradient(90deg, #3b82f6, #6366f1); border-radius: 8px; transition: width 0.4s ease; }
+.wrap{position:relative;z-index:1;max-width:820px;margin:0 auto;padding:24px 16px 60px}
 
-  .topics { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
-  .topic-btn { padding: 7px 14px; border: 2px solid #e5e7eb; border-radius: 20px; cursor: pointer; font-size: 13px; background: white; color: #555; transition: all 0.2s; font-weight: 500; }
-  .topic-btn:hover { border-color: #3b82f6; color: #3b82f6; }
-  .topic-btn.active { background: #3b82f6; border-color: #3b82f6; color: white; }
+/* Header */
+.header{text-align:center;padding:40px 0 32px}
+.header-tag{display:inline-block;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--accent);background:rgba(79,142,247,0.1);border:1px solid rgba(79,142,247,0.2);border-radius:20px;padding:5px 14px;margin-bottom:16px}
+.header h1{font-family:'Syne',sans-serif;font-size:clamp(28px,5vw,44px);font-weight:800;line-height:1.1;margin-bottom:10px;background:linear-gradient(135deg,#f1f5f9 30%,#4f8ef7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.header p{color:var(--muted2);font-size:15px;font-weight:300}
 
-  .card { background: white; border-radius: 16px; padding: 28px; box-shadow: 0 4px 16px rgba(0,0,0,0.1); }
-  .q-num { font-size: 13px; color: #888; margin-bottom: 10px; font-weight: 500; }
-  .q-text { font-size: 17px; font-weight: 600; color: #1a1a2e; margin-bottom: 22px; line-height: 1.5; }
-  .options { display: flex; flex-direction: column; gap: 10px; }
-  .opt { padding: 13px 18px; border: 2px solid #e5e7eb; border-radius: 10px; cursor: pointer; font-size: 15px; background: white; text-align: left; transition: all 0.2s; color: #333; line-height: 1.4; }
-  .opt:hover:not(:disabled) { border-color: #3b82f6; background: #eff6ff; color: #1d4ed8; }
-  .opt.correct { background: #dcfce7; border-color: #22c55e; color: #15803d; font-weight: 600; }
-  .opt.wrong { background: #fee2e2; border-color: #ef4444; color: #dc2626; }
-  .opt:disabled { cursor: default; }
+/* Stats */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}
+.stat{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px 12px;text-align:center;transition:transform 0.2s}
+.stat:hover{transform:translateY(-2px)}
+.stat-n{font-family:'Syne',sans-serif;font-size:28px;font-weight:700;line-height:1}
+.stat-l{font-size:11px;color:var(--muted);margin-top:4px;text-transform:uppercase;letter-spacing:0.5px}
+.s-blue{color:var(--accent)}
+.s-green{color:var(--green)}
+.s-red{color:var(--red)}
+.s-purple{color:#a78bfa}
 
-  .feedback { margin-top: 16px; padding: 12px 16px; border-radius: 10px; font-size: 15px; font-weight: 500; display: none; }
-  .feedback.show { display: block; }
-  .feedback.ok { background: #dcfce7; color: #15803d; border-left: 4px solid #22c55e; }
-  .feedback.no { background: #fee2e2; color: #dc2626; border-left: 4px solid #ef4444; }
+/* Progress */
+.prog-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px 20px;margin-bottom:20px}
+.prog-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.prog-label{font-size:13px;color:var(--muted2);font-weight:500}
+.prog-pct{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--accent)}
+.prog-bar{background:rgba(255,255,255,0.06);border-radius:6px;height:6px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:6px;transition:width 0.5s cubic-bezier(.4,0,.2,1);width:0%}
 
-  .next-btn { margin-top: 18px; padding: 12px 28px; background: #3b82f6; color: white; border: none; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; display: none; transition: background 0.2s; }
-  .next-btn:hover { background: #2563eb; }
+/* Topics */
+.topics{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px}
+.topic-btn{padding:8px 16px;border:1px solid var(--border);border-radius:10px;cursor:pointer;font-size:12px;font-weight:600;background:var(--surface);color:var(--muted2);transition:all 0.2s;font-family:'Syne',sans-serif;letter-spacing:0.3px}
+.topic-btn:hover{border-color:var(--accent);color:var(--accent);background:rgba(79,142,247,0.06)}
+.topic-btn.active{background:var(--accent);border-color:var(--accent);color:#fff}
 
-  .done { text-align: center; padding: 20px; }
-  .done-pct { font-size: 60px; font-weight: 800; margin: 10px 0; }
-  .done-info { font-size: 16px; color: #666; margin-bottom: 20px; }
-  .done-badge { display: inline-block; padding: 8px 22px; border-radius: 24px; font-size: 16px; font-weight: 700; margin-bottom: 16px; }
-  .badge-a { background: #dcfce7; color: #15803d; }
-  .badge-b { background: #dbeafe; color: #1d4ed8; }
-  .badge-c { background: #fef9c3; color: #a16207; }
-  .badge-d { background: #fee2e2; color: #dc2626; }
-  .retry-btn { padding: 12px 28px; background: #6366f1; color: white; border: none; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; margin: 6px; }
-  .retry-btn:hover { background: #4f46e5; }
+/* Question card */
+.q-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:28px;animation:fadeUp 0.3s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 
-  @media (max-width: 500px) {
-    .stats { grid-template-columns: repeat(2, 1fr); }
-    .stat-n { font-size: 20px; }
-    .q-text { font-size: 15px; }
-    .opt { font-size: 14px; }
-  }
+.q-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.q-badge{font-size:11px;font-weight:600;color:var(--muted);letter-spacing:1px;text-transform:uppercase;background:rgba(255,255,255,0.05);padding:4px 12px;border-radius:8px}
+.q-counter{font-family:'Syne',sans-serif;font-size:13px;color:var(--muted2)}
+
+.q-text{font-size:18px;font-weight:500;color:var(--text);margin-bottom:24px;line-height:1.55;border-left:3px solid var(--accent);padding-left:16px}
+
+.options{display:flex;flex-direction:column;gap:10px}
+.opt{padding:14px 18px;border:1px solid var(--border);border-radius:12px;cursor:pointer;font-size:14px;background:var(--surface2);color:var(--muted2);text-align:left;transition:all 0.18s;line-height:1.45;display:flex;align-items:center;gap:12px}
+.opt-letter{width:26px;height:26px;border-radius:8px;background:rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:12px;font-weight:700;flex-shrink:0;color:var(--muted);transition:all 0.18s}
+.opt:hover:not(:disabled){border-color:var(--accent);background:rgba(79,142,247,0.08);color:var(--text)}
+.opt:hover:not(:disabled) .opt-letter{background:var(--accent);color:#fff}
+.opt.correct{border-color:var(--green);background:rgba(16,185,129,0.1);color:var(--green)}
+.opt.correct .opt-letter{background:var(--green);color:#fff}
+.opt.wrong{border-color:var(--red);background:rgba(244,63,94,0.1);color:var(--red)}
+.opt.wrong .opt-letter{background:var(--red);color:#fff}
+.opt:disabled{cursor:default}
+
+.feedback{margin-top:16px;padding:13px 16px;border-radius:12px;font-size:14px;font-weight:500;display:none;animation:fadeUp 0.25s ease}
+.feedback.show{display:flex;align-items:center;gap:10px}
+.feedback.ok{background:rgba(16,185,129,0.1);color:var(--green);border:1px solid rgba(16,185,129,0.2)}
+.feedback.no{background:rgba(244,63,94,0.1);color:#fda4af;border:1px solid rgba(244,63,94,0.2)}
+.fb-icon{font-size:18px;flex-shrink:0}
+
+.next-btn{margin-top:20px;padding:13px 32px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:white;border:none;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;display:none;font-family:'Syne',sans-serif;letter-spacing:0.5px;transition:opacity 0.2s,transform 0.2s}
+.next-btn:hover{opacity:0.9;transform:translateY(-1px)}
+
+/* Done */
+.done-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:40px 28px;text-align:center;animation:fadeUp 0.4s ease}
+.done-ring{width:120px;height:120px;margin:0 auto 24px;position:relative}
+.done-ring svg{transform:rotate(-90deg)}
+.done-ring-num{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:26px;font-weight:800}
+.done-badge{display:inline-block;padding:6px 20px;border-radius:20px;font-size:13px;font-weight:700;margin-bottom:12px;font-family:'Syne',sans-serif;letter-spacing:0.5px}
+.done-title{font-family:'Syne',sans-serif;font-size:22px;font-weight:700;margin-bottom:6px}
+.done-sub{color:var(--muted2);font-size:14px;margin-bottom:28px}
+.done-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn-retry{padding:12px 24px;border:1px solid var(--border);background:var(--surface2);color:var(--text);border-radius:12px;cursor:pointer;font-size:14px;font-weight:600;font-family:'Syne',sans-serif;transition:all 0.2s}
+.btn-retry:hover{border-color:var(--accent);color:var(--accent)}
+.btn-next{padding:12px 24px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none;border-radius:12px;cursor:pointer;font-size:14px;font-weight:600;font-family:'Syne',sans-serif;transition:opacity 0.2s}
+.btn-next:hover{opacity:0.85}
+
+/* Welcome */
+.welcome{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:40px;text-align:center}
+.welcome-icon{font-size:48px;margin-bottom:16px}
+.welcome-title{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;margin-bottom:8px}
+.welcome-text{color:var(--muted2);font-size:14px;line-height:1.6}
+
+/* Streak */
+.streak{display:flex;gap:6px;margin-bottom:20px;flex-wrap:wrap}
+.streak-dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,0.08);transition:background 0.3s}
+.streak-dot.ok{background:var(--green)}
+.streak-dot.no{background:var(--red)}
+
+@media(max-width:500px){
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .stat-n{font-size:22px}
+  .q-text{font-size:16px}
+  .header h1{font-size:28px}
+}
 </style>
 </head>
 <body>
-<div class="container">
-  <h1>🔐 Tarmoq Xavfsizligi Testi</h1>
-  <p class="subtitle">Mavzuni tanlang va boshlang — savollar har safar aralashadi</p>
+<div class="wrap">
+
+  <div class="header">
+    <div class="header-tag">OTM Talabalari Uchun</div>
+    <h1>Tarmoq Xavfsizligi<br>Testi</h1>
+    <p>150+ savol · 10 mavzu · Javoblar aralashib keladi</p>
+  </div>
 
   <div class="stats">
-    <div class="stat"><div class="stat-n blue" id="sTotal">0</div><div class="stat-l">Jami savol</div></div>
-    <div class="stat"><div class="stat-n green" id="sCorrect">0</div><div class="stat-l">To'g'ri</div></div>
-    <div class="stat"><div class="stat-n red" id="sWrong">0</div><div class="stat-l">Noto'g'ri</div></div>
-    <div class="stat"><div class="stat-n" id="sPct" style="color:#6366f1">—</div><div class="stat-l">Natija</div></div>
+    <div class="stat"><div class="stat-n s-blue" id="sTotal">0</div><div class="stat-l">Jami</div></div>
+    <div class="stat"><div class="stat-n s-green" id="sCorrect">0</div><div class="stat-l">To'g'ri</div></div>
+    <div class="stat"><div class="stat-n s-red" id="sWrong">0</div><div class="stat-l">Noto'g'ri</div></div>
+    <div class="stat"><div class="stat-n s-purple" id="sPct">—</div><div class="stat-l">Natija</div></div>
   </div>
 
-  <div class="progress-wrap">
-    <div class="progress-top">
-      <span id="progText">Mavzu tanlanmagan</span>
-      <span id="progPct">0%</span>
+  <div class="prog-card">
+    <div class="prog-top">
+      <span class="prog-label" id="progLabel">Mavzu tanlanmagan</span>
+      <span class="prog-pct" id="progPct">0%</span>
     </div>
-    <div class="progress-bar"><div class="progress-fill" id="progFill" style="width:0%"></div></div>
+    <div class="prog-bar"><div class="prog-fill" id="progFill"></div></div>
   </div>
 
+  <div class="streak" id="streak"></div>
   <div class="topics" id="topicBtns"></div>
-
   <div id="qArea">
-    <div class="card" style="text-align:center; padding: 40px; color: #888;">
-      <div style="font-size: 48px; margin-bottom: 12px;">👆</div>
-      <div style="font-size: 16px;">Yuqoridagi mavzulardan birini tanlang</div>
+    <div class="welcome">
+      <div class="welcome-icon">🔐</div>
+      <div class="welcome-title">Mavzuni tanlang</div>
+      <div class="welcome-text">Yuqoridagi tugmalardan mavzu tanlang.<br>Savollar va javoblar har safar aralashib chiqadi.</div>
     </div>
   </div>
 </div>
 
 <script>
-const ALL = [
+const ALL=[
   {t:"1-mavzu",full:"Asosiy tushunchalar",qs:[
     {q:"Tarmoq xavfsizligining asosiy vazifasi qaysi javobda to'g'ri ko'rsatilgan?",o:["Tarmoq va ma'lumotlarni himoyalash","Faqat kompyuterni tezlashtirish","Faqat printerlarni ulash","Faqat dastur yozish"],a:0},
     {q:"CIA triadasidagi 'C' harfi nimani anglatadi?",o:["Control","Confidentiality","Connection","Configuration"],a:1},
@@ -270,14 +332,21 @@ const ALL = [
   ]}
 ];
 
-let cur={t:0,q:0,correct:0,wrong:0,answered:false,qs:[]};
+function shuffle(arr){return [...arr].sort(()=>Math.random()-0.5)}
 
-function shuffle(arr){return [...arr].sort(()=>Math.random()-0.5);}
+// Shuffle options but keep track of correct answer
+function shuffleOptions(q){
+  const correct = q.o[q.a];
+  const shuffled = shuffle([...q.o]);
+  return { opts: shuffled, correctIdx: shuffled.indexOf(correct) };
+}
+
+let cur={t:0,q:0,correct:0,wrong:0,answered:false,qs:[],history:[]};
 
 function initTopic(i){
-  cur={t:i,q:0,correct:0,wrong:0,answered:false,qs:shuffle(ALL[i].qs)};
+  cur={t:i,q:0,correct:0,wrong:0,answered:false,qs:shuffle(ALL[i].qs),history:[]};
   document.querySelectorAll('.topic-btn').forEach((b,j)=>b.classList.toggle('active',j===i));
-  updateStats(); renderQ();
+  updateStats();updateStreak();renderQ();
 }
 
 function updateStats(){
@@ -289,53 +358,82 @@ function updateStats(){
   const p=cur.qs.length>0?Math.round(cur.q/cur.qs.length*100):0;
   document.getElementById('progFill').style.width=p+'%';
   document.getElementById('progPct').textContent=p+'%';
-  document.getElementById('progText').textContent=ALL[cur.t].full+' — Savol '+Math.min(cur.q+1,cur.qs.length)+'/'+cur.qs.length;
+  document.getElementById('progLabel').textContent=ALL[cur.t].full+' — '+Math.min(cur.q+1,cur.qs.length)+'/'+cur.qs.length;
+}
+
+function updateStreak(){
+  const s=document.getElementById('streak');
+  s.innerHTML=cur.history.slice(-20).map(v=>`<div class="streak-dot ${v?'ok':'no'}"></div>`).join('');
 }
 
 function renderQ(){
   const area=document.getElementById('qArea');
   if(cur.q>=cur.qs.length){renderDone(area);return;}
   const q=cur.qs[cur.q];
-  const opts=q.o.map((o,i)=>`<button class="opt" onclick="pick(${i})">${String.fromCharCode(65+i)}) ${o}</button>`).join('');
-  area.innerHTML=`<div class="card">
-    <div class="q-num">Savol ${cur.q+1} / ${cur.qs.length} — ${ALL[cur.t].full}</div>
+  const {opts,correctIdx}=shuffleOptions(q);
+  const letters=['A','B','C','D'];
+  const optHtml=opts.map((o,i)=>`<button class="opt" onclick="pick(${i},${correctIdx})"><span class="opt-letter">${letters[i]}</span>${o}</button>`).join('');
+  area.innerHTML=`<div class="q-card">
+    <div class="q-header">
+      <span class="q-badge">${ALL[cur.t].full}</span>
+      <span class="q-counter">${cur.q+1} / ${cur.qs.length}</span>
+    </div>
     <div class="q-text">${q.q}</div>
-    <div class="options">${opts}</div>
+    <div class="options">${optHtml}</div>
     <div class="feedback" id="fb"></div>
-    <button class="next-btn" id="nxt" onclick="nextQ()">Keyingi savol →</button>
+    <button class="next-btn" id="nxt" onclick="nextQ()">${cur.q+1<cur.qs.length?'Keyingi savol →':'Natijani ko\'rish →'}</button>
   </div>`;
 }
 
-function pick(i){
+function pick(i,correctIdx){
   if(cur.answered)return;
   cur.answered=true;
-  const q=cur.qs[cur.q];
   const btns=document.querySelectorAll('.opt');
   btns.forEach(b=>b.disabled=true);
-  btns[i].classList.add(i===q.a?'correct':'wrong');
-  if(i!==q.a)btns[q.a].classList.add('correct');
+  const isCorrect=i===correctIdx;
+  btns[i].classList.add(isCorrect?'correct':'wrong');
+  if(!isCorrect)btns[correctIdx].classList.add('correct');
   const fb=document.getElementById('fb');
-  if(i===q.a){cur.correct++;fb.className='feedback show ok';fb.textContent='✓ To\'g\'ri!';}
-  else{cur.wrong++;fb.className='feedback show no';fb.textContent='✗ Noto\'g\'ri. To\'g\'ri javob: '+String.fromCharCode(65+q.a)+') '+q.o[q.a];}
-  updateStats();
-  document.getElementById('nxt').style.display='block';
+  if(isCorrect){
+    cur.correct++;cur.history.push(true);
+    fb.className='feedback show ok';
+    fb.innerHTML='<span class="fb-icon">✓</span><span>To\'g\'ri! Zo\'r!</span>';
+  } else {
+    cur.wrong++;cur.history.push(false);
+    fb.className='feedback show no';
+    fb.innerHTML='<span class="fb-icon">✗</span><span>Noto\'g\'ri. To\'g\'ri javob yashil rangda ko\'rsatildi.</span>';
+  }
+  updateStats();updateStreak();
+  document.getElementById('nxt').style.display='inline-block';
 }
 
 function nextQ(){cur.q++;cur.answered=false;updateStats();renderQ();}
 
 function renderDone(area){
-  const pct=Math.round(cur.correct/cur.qs.length*100);
-  let badge,cls;
-  if(pct>=85){badge='A\'lo natija! 🎉';cls='badge-a';}
-  else if(pct>=70){badge='Yaxshi 👍';cls='badge-b';}
-  else if(pct>=50){badge='O\'rtacha 📖';cls='badge-c';}
-  else{badge='Yana mashq kerak 💪';cls='badge-d';}
-  area.innerHTML=`<div class="card done">
-    <div class="done-badge ${cls}">${badge}</div>
-    <div class="done-pct">${pct}%</div>
-    <div class="done-info">${cur.correct} ta to'g'ri / ${cur.qs.length} ta savol</div>
-    <button class="retry-btn" onclick="initTopic(${cur.t})">🔄 Qayta urinish</button>
-    ${cur.t<ALL.length-1?`<button class="retry-btn" style="background:#059669" onclick="initTopic(${cur.t+1})">Keyingi mavzu →</button>`:''}
+  const total=cur.qs.length;
+  const pct=Math.round(cur.correct/total*100);
+  const r=40;const circ=2*Math.PI*r;const dash=circ*(pct/100);
+  let badge,bc,color;
+  if(pct>=85){badge="A'lo natija! 🎉";bc="rgba(16,185,129,0.15)";color="#10b981";}
+  else if(pct>=70){badge="Yaxshi! 👍";bc="rgba(79,142,247,0.15)";color="#4f8ef7";}
+  else if(pct>=50){badge="O'rtacha 📖";bc="rgba(245,158,11,0.15)";color="#f59e0b";}
+  else{badge="Yana mashq kerak 💪";bc="rgba(244,63,94,0.15)";color="#f43f5e";}
+  area.innerHTML=`<div class="done-card">
+    <div class="done-ring">
+      <svg width="120" height="120" viewBox="0 0 100 100">
+        <circle cx="50" cy="50" r="${r}" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="8"/>
+        <circle cx="50" cy="50" r="${r}" fill="none" stroke="${color}" stroke-width="8"
+          stroke-dasharray="${dash} ${circ}" stroke-linecap="round"/>
+      </svg>
+      <div class="done-ring-num" style="color:${color}">${pct}%</div>
+    </div>
+    <div class="done-badge" style="background:${bc};color:${color}">${badge}</div>
+    <div class="done-title">${cur.correct} / ${total} to'g'ri</div>
+    <div class="done-sub">${ALL[cur.t].full} mavzusi yakunlandi</div>
+    <div class="done-actions">
+      <button class="btn-retry" onclick="initTopic(${cur.t})">🔄 Qayta urinish</button>
+      ${cur.t<ALL.length-1?`<button class="btn-next" onclick="initTopic(${cur.t+1})">Keyingi mavzu →</button>`:'<button class="btn-next" onclick="initTopic(0)">Boshidan boshlash →</button>'}
+    </div>
   </div>`;
 }
 
@@ -343,12 +441,11 @@ function renderDone(area){
 const tb=document.getElementById('topicBtns');
 ALL.forEach((t,i)=>{
   const b=document.createElement('button');
-  b.className='topic-btn';
-  b.textContent=t.t;
-  b.title=t.full;
+  b.className='topic-btn';b.textContent=t.t;b.title=t.full;
   b.onclick=()=>initTopic(i);
   tb.appendChild(b);
 });
 </script>
 </body>
 </html>
+HTMLEOF
